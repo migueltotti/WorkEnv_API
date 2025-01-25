@@ -7,7 +7,8 @@ public class WorkSpace
     public int NumberOfActivities { get; private set; }
     private string? MasterCode;
 
-    public List<Activity> Activities { get; set; }
+    public User Owner { get; private set; }
+    public ICollection<Activity> Activities { get; set; }
 
     private WorkSpace()
     {

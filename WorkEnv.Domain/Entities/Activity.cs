@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using WorkEnv.Domain.Enum;
 using WorkEnv.Domain.Services;
 using WorkEnv.Domain.ValueObjects;
@@ -7,7 +8,7 @@ namespace WorkEnv.Domain.Entities;
 public abstract class Activity
 {
     public Guid Id { get; private set; }
-    public Guid AdminId { get; private set; }
+    public Guid? AdminId { get; private set; }
     public Guid WorkSpaceId { get; private set; }
     public int NumberOfParticipants { get; private set; }
     public int _maxNumberOfParticipants { get; private set; }
@@ -15,18 +16,18 @@ public abstract class Activity
     public ActivityStatus ActivityStatus { get; private set; }
     public string? AccessPassword { get; private set; }
     public Access AccessOptions { get; private set; }
-    public (string, DateTime) AdminInviteCode { get; private set; }
+    public AdminInvite AdminInviteCode { get; private set; }
     
-    public User Admin { get; private set; } 
+    public User? Admin { get; private set; } 
     public WorkSpace WorkSpace { get; private set; }
-    public List<UserRoleActivity> Users { get; private set; } = [];
-    public List<Message> Messages { get; private set; } = [];
+    public ICollection<UserActivity> UserActivities { get; private set; } = [];
+    public ICollection<Message> Messages { get; private set; } = [];
 
     private Activity()
     {
     }
     
-    public Activity(int maxNumberOfParticipants, Guid id, Guid adminId, Guid workSpaceId, Privacy privacy, string? accessPassword, Access accessOptions, (string, DateTime) adminInviteCode)
+    public Activity(int maxNumberOfParticipants, Guid id, Guid adminId, Guid workSpaceId, Privacy privacy, Access accessOptions, AdminInvite adminInviteCode)
     {
         _maxNumberOfParticipants = maxNumberOfParticipants;
         Id = id;
@@ -34,19 +35,19 @@ public abstract class Activity
         WorkSpaceId = workSpaceId;
         NumberOfParticipants = 1;
         Privacy = privacy;
-        AccessPassword = accessPassword;
+        AccessPassword = PasswordGenerator.GeneratePassword();;
         AccessOptions = accessOptions;
         AdminInviteCode = adminInviteCode;
     }
 
-    public Activity(int maxNumberOfParticipants, Guid adminId, Guid workSpaceId, Privacy privacy, string? accessPassword, Access accessOptions)
+    public Activity(int maxNumberOfParticipants, Guid adminId, Guid workSpaceId, Privacy privacy, Access accessOptions)
     {
         _maxNumberOfParticipants = maxNumberOfParticipants;
         AdminId = adminId;
         WorkSpaceId = workSpaceId;
         NumberOfParticipants = 1;
         Privacy = privacy;
-        AccessPassword = accessPassword;
+        AccessPassword = PasswordGenerator.GeneratePassword();;
         AccessOptions = accessOptions;
     }
     
@@ -100,37 +101,39 @@ public abstract class Activity
         ActivityStatus = activityStatus;
     } 
     
-    public (int, DateTime) GenerateAdminInviteCode(Guid ownerId, int validationTimeInDays = 3)
+    public AdminInvite GenerateAdminInviteCode(Guid ownerId, int validationTimeInDays = 3)
     {
         if(!WorkSpace.OwnerId.Equals(ownerId))
             throw new AccessViolationException("Invalid OwnerId!");
         
-        return new ValueTuple<int, DateTime>(new Random().Next(111111, 999999), DateTime.Now.AddDays(validationTimeInDays));
+        return new AdminInvite(new Random().Next(111111, 999999), DateTime.Now.AddDays(validationTimeInDays));
     } 
     
-    public void AddUser(UserRoleActivity userRoleActivity)
+    public void AddUser(UserActivity userActivity)
     {
-        if(userRoleActivity is null)
+        if(userActivity is null)
             throw new ArgumentNullException("UserRoleActivity cannot be null.");
         
-        if(!userRoleActivity.ActivityId.Equals(Id))
+        if(!userActivity.ActivityId.Equals(Id))
             throw new ArgumentNullException("UserRoleActivity ActiviryId mismatch.");
         
-        Users.Add(userRoleActivity);
+        UserActivities.Add(userActivity);
+        NumberOfParticipants++;
     }
     
-    public void RemoveUser(UserRoleActivity userRoleActivity)
+    public void RemoveUser(UserActivity userActivity)
     {
-        if(userRoleActivity is null)
+        if(userActivity is null)
             throw new ArgumentNullException("UserRoleActivity cannot be null.");
         
-        if(!userRoleActivity.ActivityId.Equals(Id))
+        if(!userActivity.ActivityId.Equals(Id))
             throw new ArgumentNullException("UserRoleActivity ActiviryId mismatch.");
         
-        if(Users.Count is 0)
+        if(UserActivities.Count is 0)
             throw new ArgumentNullException("There's no users to delete.");
         
-        Users.Remove(userRoleActivity);
+        UserActivities.Remove(userActivity);
+        NumberOfParticipants--;
     }
     
     public void AddMessage(Message message)

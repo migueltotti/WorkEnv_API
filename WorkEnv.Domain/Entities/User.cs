@@ -10,8 +10,8 @@ public class User
     public string? Password { get; private set; }
     public DateTime DateBirth { get; private set; }
     
-    public List<WorkSpace> WorkSpaces { get; private set; } = [];
-    public List<UserRoleActivity> UserRoleActivities { get; private set; } = [];
+    public ICollection<WorkSpace> WorkSpaces { get; private set; } = [];
+    public ICollection<UserActivity> UserActivities { get; private set; } = [];
 
     private User()
     {
@@ -69,14 +69,14 @@ public class User
         WorkSpaces.Add(workSpace);
     }
     
-    public void AddUserToActivity(UserRoleActivity userRoleActivity)
+    public void AddUserToActivity(UserActivity userActivity)
     {
-        if (userRoleActivity is null)
+        if (userActivity is null)
             throw new ArgumentNullException("WorkSpace cannot be null.");
         
-        if(!userRoleActivity.UserId.Equals(UserId))
-            throw new ArgumentNullException("UserRoleActivity UserId mismatch.");
+        if(!userActivity.UserId.Equals(UserId))
+            throw new ArgumentNullException("UserActivity UserId mismatch.");
         
-        UserRoleActivities.Add(userRoleActivity);
+        UserActivities.Add(userActivity);
     }
 }

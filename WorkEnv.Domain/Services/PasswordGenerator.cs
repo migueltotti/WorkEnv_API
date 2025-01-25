@@ -4,7 +4,7 @@ namespace WorkEnv.Domain.Services;
 
 public class PasswordGenerator
 {
-    private const int PASSWORDLENGTH = 10;
+    private const int PASSWORDLENGTH = 12;
     const string upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const string lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
     const string digits = "0123456789";

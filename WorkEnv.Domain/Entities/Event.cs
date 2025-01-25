@@ -1,4 +1,5 @@
 using WorkEnv.Domain.Enum;
+using WorkEnv.Domain.ValueObjects;
 
 namespace WorkEnv.Domain.Entities;
 
@@ -10,12 +11,11 @@ public class Event : Activity
         Guid id, 
         Guid adminId, 
         Guid workSpaceId, 
-        Privacy privacy, 
-        string? accessPassword, 
+        Privacy privacy,  
         Access accessOptions, 
-        (string, DateTime) adminInviteCode, 
+        AdminInvite adminInviteCode, 
         DateTime eventDate) 
-        : base(maxNumberOfParticipants, id, adminId, workSpaceId, privacy, accessPassword, accessOptions, adminInviteCode)
+        : base(maxNumberOfParticipants, id, adminId, workSpaceId, privacy, accessOptions, adminInviteCode)
     {
         if(eventDate < DateTime.Now)
             throw new ArgumentException("Event date cannot be earlier than today.");
@@ -26,11 +26,10 @@ public class Event : Activity
     public Event(int maxNumberOfParticipants, 
         Guid adminId, 
         Guid workSpaceId, 
-        Privacy privacy, 
-        string? accessPassword, 
+        Privacy privacy,  
         Access accessOptions, 
         DateTime eventDate) 
-        : base(maxNumberOfParticipants, adminId, workSpaceId, privacy, accessPassword, accessOptions)
+        : base(maxNumberOfParticipants, adminId, workSpaceId, privacy, accessOptions)
     {
         if(eventDate < DateTime.Now)
             throw new ArgumentException("Event date cannot be earlier than today.");

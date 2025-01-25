@@ -6,7 +6,7 @@ public class Role
     public string? Name { get; private set; }
     public string? Description { get; private set; }
 
-    public List<UserRoleActivity> UserRoles { get; private set; } = [];
+    public ICollection<UserActivity> UserActivities { get; private set; } = [];
 
     private Role()
     {
