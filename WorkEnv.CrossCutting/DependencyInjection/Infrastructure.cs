@@ -6,19 +6,13 @@ using WorkEnv.Infrastructure.Context;
 
 namespace WorkEnv.CrossCutting.DependencyInjection;
 
-public static class Infrastructure
+public static partial class Infrastructure
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        services.AddDbContext(config);
 
-        services.AddDbContext<WorkEnvDbContext>(options => 
-            options.UseNpgsql(connectionString));
-
-        services.AddMediatR(cfg => 
-            cfg.RegisterServicesFromAssembly(typeof(Infrastructure).Assembly));
-
-        //services.AddValidatorsFromAssembly()
+        services.AddValidators();
 
         return services;
     }

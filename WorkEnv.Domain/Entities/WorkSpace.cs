@@ -14,16 +14,9 @@ public class WorkSpace
     {
     }
 
-    public WorkSpace(Guid workSpaceId, Guid ownerId, int numberOfActivities, string? masterCode)
-    {
-        WorkSpaceId = workSpaceId;
-        OwnerId = ownerId;
-        NumberOfActivities = numberOfActivities;
-        MasterCode = masterCode;
-    }
-
     public WorkSpace(string? masterCode, Guid ownerId, int numberOfActivities)
     {
+        WorkSpaceId = Guid.NewGuid();
         MasterCode = masterCode;
         OwnerId = ownerId;
         NumberOfActivities = numberOfActivities;

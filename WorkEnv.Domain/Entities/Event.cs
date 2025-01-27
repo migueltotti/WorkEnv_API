@@ -7,15 +7,18 @@ public class Event : Activity
 {
     public DateTime EventDate { get; private set; }
 
-    public Event(int maxNumberOfParticipants, 
-        Guid id, 
-        Guid adminId, 
-        Guid workSpaceId, 
-        Privacy privacy,  
-        Access accessOptions, 
-        AdminInvite adminInviteCode, 
+    private Event()
+    {
+    }
+
+    public Event(
+        Guid workSpaceId,
+        int maxNumberOfParticipants,
+        Privacy privacy,
+        ActivityStatus activityStatus,
+        Access accessOptions,
         DateTime eventDate) 
-        : base(maxNumberOfParticipants, id, adminId, workSpaceId, privacy, accessOptions, adminInviteCode)
+        : base(workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
     {
         if(eventDate < DateTime.Now)
             throw new ArgumentException("Event date cannot be earlier than today.");
@@ -23,20 +26,6 @@ public class Event : Activity
         EventDate = eventDate;
     }
 
-    public Event(int maxNumberOfParticipants, 
-        Guid adminId, 
-        Guid workSpaceId, 
-        Privacy privacy,  
-        Access accessOptions, 
-        DateTime eventDate) 
-        : base(maxNumberOfParticipants, adminId, workSpaceId, privacy, accessOptions)
-    {
-        if(eventDate < DateTime.Now)
-            throw new ArgumentException("Event date cannot be earlier than today.");
-        
-        EventDate = eventDate;
-    }
-    
     public void ChangeEventDate(Guid ownerOrAdminId, DateTime newEventDate)
     {
         if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))

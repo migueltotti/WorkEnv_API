@@ -23,32 +23,20 @@ public abstract class Activity
     public ICollection<UserActivity> UserActivities { get; private set; } = [];
     public ICollection<Message> Messages { get; private set; } = [];
 
-    private Activity()
+    protected Activity()
     {
-    }
-    
-    public Activity(int maxNumberOfParticipants, Guid id, Guid adminId, Guid workSpaceId, Privacy privacy, Access accessOptions, AdminInvite adminInviteCode)
-    {
-        _maxNumberOfParticipants = maxNumberOfParticipants;
-        Id = id;
-        AdminId = adminId;
-        WorkSpaceId = workSpaceId;
-        NumberOfParticipants = 1;
-        Privacy = privacy;
-        AccessPassword = PasswordGenerator.GeneratePassword();;
-        AccessOptions = accessOptions;
-        AdminInviteCode = adminInviteCode;
     }
 
-    public Activity(int maxNumberOfParticipants, Guid adminId, Guid workSpaceId, Privacy privacy, Access accessOptions)
+    protected Activity(Guid workSpaceId, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions)
     {
-        _maxNumberOfParticipants = maxNumberOfParticipants;
-        AdminId = adminId;
+        Id = Guid.NewGuid();
         WorkSpaceId = workSpaceId;
-        NumberOfParticipants = 1;
+        _maxNumberOfParticipants = maxNumberOfParticipants;
         Privacy = privacy;
-        AccessPassword = PasswordGenerator.GeneratePassword();;
+        NumberOfParticipants = 1;
+        ActivityStatus = activityStatus;
         AccessOptions = accessOptions;
+        AccessPassword = PasswordGenerator.GeneratePassword();
     }
     
     public void ChangeAdmin(Guid ownerOrAdminId)

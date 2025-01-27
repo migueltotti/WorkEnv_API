@@ -12,15 +12,9 @@ public class Role
     {
     }
 
-    public Role(Guid roleId, string? name, string? description)
-    {
-        RoleId = roleId;
-        Name = name;
-        Description = description;
-    }
-
     public Role(string? name, string? description)
     {
+        RoleId = Guid.NewGuid();
         Name = name;
         Description = description;
     }

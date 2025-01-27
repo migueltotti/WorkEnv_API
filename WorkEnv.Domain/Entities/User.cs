@@ -17,17 +17,9 @@ public class User
     {
     }
 
-    public User(Guid userId, string? name, string? email, string? password, DateTime dateBirth)
-    {
-        UserId = userId;
-        Name = name;
-        Email = email;
-        Password = password;
-        DateBirth = dateBirth;
-    }
-    
     public User(string? name, string? email, string? password, DateTime dateBirth)
     {
+        UserId = Guid.NewGuid();
         Name = name;
         Email = email;
         Password = password;
