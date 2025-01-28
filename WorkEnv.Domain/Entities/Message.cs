@@ -18,8 +18,9 @@ public record Message
     {
     }
 
-    public Message(Guid activityId, string? title, string? content, MessageType messageType)
+    public Message(Guid messageId, Guid activityId, string? title, string? content, MessageType messageType)
     {
+        MessageId = messageId;
         ActivityId = activityId;
         Title = title;
         Content = content;

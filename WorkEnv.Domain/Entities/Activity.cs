@@ -27,9 +27,9 @@ public abstract class Activity
     {
     }
 
-    protected Activity(Guid workSpaceId, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions)
+    protected Activity(Guid id, Guid workSpaceId, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         WorkSpaceId = workSpaceId;
         _maxNumberOfParticipants = maxNumberOfParticipants;
         Privacy = privacy;

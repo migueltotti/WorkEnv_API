@@ -13,6 +13,7 @@ public class Task : Activity
     }
 
     public Task(
+        Guid id,
         Guid workSpaceId,
         int maxNumberOfParticipants,
         Privacy privacy,
@@ -20,7 +21,7 @@ public class Task : Activity
         Access accessOptions,
         DateTime startDate,
         DateTime endDate)
-        : base(workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
+        : base(id, workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
     {
         if(startDate > endDate)
             throw new ArgumentException("Start date cannot be greater than end date");
@@ -30,13 +31,14 @@ public class Task : Activity
     }
 
     public Task(
+        Guid id,
         Guid workSpaceId,
         int maxNumberOfParticipants,
         Privacy privacy,
         ActivityStatus activityStatus,
         Access accessOptions,
         DateTime startDate)
-        : base(workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
+        : base(id, workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
     {
         StartDate = startDate;
     }

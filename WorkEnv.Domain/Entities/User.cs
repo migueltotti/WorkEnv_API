@@ -17,9 +17,9 @@ public class User
     {
     }
 
-    public User(string? name, string? email, string? password, DateTime dateBirth)
+    public User(Guid userId,string? name, string? email, string? password, DateTime dateBirth)
     {
-        UserId = Guid.NewGuid();
+        UserId = userId;
         Name = name;
         Email = email;
         Password = password;

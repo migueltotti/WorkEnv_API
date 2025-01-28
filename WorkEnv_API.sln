@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkEnv.CrossCutting", "Wor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkEnv.Infrastructure", "WorkEnv.Infrastructure\WorkEnv.Infrastructure.csproj", "{76D4E79A-7ABE-4335-86A8-D17FC6DFD6AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{6EB8271B-9926-4522-97DA-232E4737000A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{6EB8271B-9926-4522-97DA-232E4737000A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

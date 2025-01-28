@@ -19,6 +19,10 @@ public class WorkSpaceConfiguration : IEntityTypeConfiguration<WorkSpace>
         builder.Property(ws => ws.NumberOfActivities)
             .IsRequired()
             .HasDefaultValue(0);
+        builder.Property<string>("_masterCode")
+            .IsRequired()
+            .HasColumnName("_masterCode")
+            .HasMaxLength(30);
 
         builder.HasMany(ws => ws.Activities)
             .WithOne(a => a.WorkSpace)

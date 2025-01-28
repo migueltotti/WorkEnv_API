@@ -5,19 +5,19 @@ public class WorkSpace
     public Guid WorkSpaceId { get; private set; }
     public Guid OwnerId { get; private set; }
     public int NumberOfActivities { get; private set; }
-    private string? MasterCode;
+    private string? _masterCode;
 
     public User Owner { get; private set; }
-    public ICollection<Activity> Activities { get; set; }
+    public ICollection<Activity> Activities { get; private set; }
 
     private WorkSpace()
     {
     }
 
-    public WorkSpace(string? masterCode, Guid ownerId, int numberOfActivities)
+    public WorkSpace(Guid workSpaceId, string? masterCode, Guid ownerId, int numberOfActivities)
     {
-        WorkSpaceId = Guid.NewGuid();
-        MasterCode = masterCode;
+        WorkSpaceId = workSpaceId;
+        _masterCode = masterCode;
         OwnerId = ownerId;
         NumberOfActivities = numberOfActivities;
     }
@@ -47,7 +47,7 @@ public class WorkSpace
     
     public string? GetMasterCode(Guid ownerId)
     {
-        return ownerId.Equals(OwnerId) ? MasterCode : null; 
+        return ownerId.Equals(OwnerId) ? _masterCode : null; 
     }
     
     public void AddActivity(Activity activity)
@@ -58,5 +58,15 @@ public class WorkSpace
             throw new ArgumentException("The activity does not belong to indicated workspace.");
             
         Activities.Add(activity);
+    }
+    
+    public void RemoveActivity(Activity activity)
+    {
+        ArgumentNullException.ThrowIfNull(activity);
+        
+        if (!activity.WorkSpaceId.Equals(WorkSpaceId))
+            throw new ArgumentException("The activity does not belong to indicated workspace.");
+            
+        Activities.Remove(activity);
     }
 }

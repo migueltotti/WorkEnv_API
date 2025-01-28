@@ -12,13 +12,14 @@ public class Event : Activity
     }
 
     public Event(
+        Guid id,
         Guid workSpaceId,
         int maxNumberOfParticipants,
         Privacy privacy,
         ActivityStatus activityStatus,
         Access accessOptions,
         DateTime eventDate) 
-        : base(workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
+        : base(id, workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
     {
         if(eventDate < DateTime.Now)
             throw new ArgumentException("Event date cannot be earlier than today.");
