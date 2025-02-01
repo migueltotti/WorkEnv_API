@@ -22,7 +22,7 @@ public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
             .IsRequired();
         builder.Property(a => a.NumberOfParticipants)
             .HasDefaultValue(1);
-        builder.Property(a => a._maxNumberOfParticipants)
+        builder.Property(a => a.MaxNumberOfParticipants)
             .IsRequired();
         builder.Property(a => a.Privacy)
             .IsRequired()

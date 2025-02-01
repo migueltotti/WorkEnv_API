@@ -19,7 +19,7 @@ public class Role
         Description = description;
     }
     
-    public void ChangeRoleName(string newName)
+    public void ChangeName(string newName)
     {
         if (String.IsNullOrEmpty(newName))
             throw new ArgumentNullException("Role name should be not null or empty!");

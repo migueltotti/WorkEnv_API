@@ -11,7 +11,7 @@ public abstract class Activity
     public Guid? AdminId { get; private set; }
     public Guid WorkSpaceId { get; private set; }
     public int NumberOfParticipants { get; private set; }
-    public int _maxNumberOfParticipants { get; private set; }
+    public int MaxNumberOfParticipants { get; private set; }
     public Privacy Privacy { get; private set; } 
     public ActivityStatus ActivityStatus { get; private set; }
     public string? AccessPassword { get; private set; }
@@ -27,11 +27,12 @@ public abstract class Activity
     {
     }
 
-    protected Activity(Guid id, Guid workSpaceId, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions)
+    protected Activity(Guid id, Guid workSpaceId, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions, Guid? adminId = null)
     {
         Id = id;
+        AdminId = adminId;
         WorkSpaceId = workSpaceId;
-        _maxNumberOfParticipants = maxNumberOfParticipants;
+        MaxNumberOfParticipants = maxNumberOfParticipants;
         Privacy = privacy;
         NumberOfParticipants = 1;
         ActivityStatus = activityStatus;
@@ -39,12 +40,12 @@ public abstract class Activity
         AccessPassword = PasswordGenerator.GeneratePassword();
     }
     
-    public void ChangeAdmin(Guid ownerOrAdminId)
+    public void ChangeAdmin(Guid oldOwnerOrAdminId, Guid newAdminId)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        if(!AdminId.Equals(oldOwnerOrAdminId) || !WorkSpace.OwnerId.Equals(oldOwnerOrAdminId))
+            throw new AccessViolationException("Invalid OwnerId or AdminId!");
         
-        AdminId = ownerOrAdminId;
+        AdminId = newAdminId;
     } 
     
     public void UpgradeMaxNumberOfParticipants(int newMaxNumberOfParticipants)
@@ -52,7 +53,7 @@ public abstract class Activity
         if (newMaxNumberOfParticipants is <= 1)
             throw new ArgumentException("MaxNumberOfParticipants must be greater than 1");
         
-        _maxNumberOfParticipants = newMaxNumberOfParticipants;
+        MaxNumberOfParticipants = newMaxNumberOfParticipants;
     } 
     
     public string ChangeAccessPassword(Guid ownerOrAdminId)
@@ -103,7 +104,7 @@ public abstract class Activity
             throw new ArgumentNullException("UserRoleActivity cannot be null.");
         
         if(!userActivity.ActivityId.Equals(Id))
-            throw new ArgumentNullException("UserRoleActivity ActiviryId mismatch.");
+            throw new ArgumentException("UserRoleActivity ActiviryId mismatch.");
         
         UserActivities.Add(userActivity);
         NumberOfParticipants++;
@@ -118,7 +119,7 @@ public abstract class Activity
             throw new ArgumentNullException("UserRoleActivity ActiviryId mismatch.");
         
         if(UserActivities.Count is 0)
-            throw new ArgumentNullException("There's no users to delete.");
+            throw new ArgumentException("There's no users to delete.");
         
         UserActivities.Remove(userActivity);
         NumberOfParticipants--;
@@ -130,7 +131,7 @@ public abstract class Activity
             throw new ArgumentNullException("Message cannot be null.");
         
         if(!message.ActivityId.Equals(Id))
-            throw new ArgumentNullException("Message does not belong to this Activity.");
+            throw new ArgumentException("Message does not belong to this Activity.");
         
         Messages.Add(message);
     }
@@ -141,10 +142,10 @@ public abstract class Activity
             throw new ArgumentNullException("Message cannot be null.");
         
         if(!message.ActivityId.Equals(Id))
-            throw new ArgumentNullException("Message does not belong to this Activity.");
+            throw new ArgumentException("Message does not belong to this Activity.");
         
         if(Messages.Count is 0)
-            throw new ArgumentNullException("There's no activities to delete.");
+            throw new ArgumentException("There's no activities to delete.");
         
         Messages.Remove(message);
     }

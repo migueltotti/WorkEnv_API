@@ -14,22 +14,20 @@ public class WorkSpace
     {
     }
 
-    public WorkSpace(Guid workSpaceId, string? masterCode, Guid ownerId, int numberOfActivities)
+    public WorkSpace(Guid workSpaceId, Guid ownerId, string? masterCode)
     {
         WorkSpaceId = workSpaceId;
         _masterCode = masterCode;
         OwnerId = ownerId;
-        NumberOfActivities = numberOfActivities;
+        NumberOfActivities = 0;
     }
 
-    public bool ChangeOwner(Guid oldOwnerId, Guid newOwnerId)
+    public void ChangeOwner(Guid oldOwnerId, Guid newOwnerId)
     {
         if (!oldOwnerId.Equals(OwnerId))
-            return false;
+            throw new ArgumentNullException("oldOwnerId does not own this workSpace");
         
         OwnerId = newOwnerId;
-        
-        return true;
     }
     
     public void IncreaseNumberOfActivities()
@@ -39,7 +37,7 @@ public class WorkSpace
     
     public void DecreaseNumberOfActivities()
     {
-        if (NumberOfActivities < 0)
+        if (NumberOfActivities == 0)
             throw new ArgumentOutOfRangeException("The number of activities cannot be negative.");
 
         NumberOfActivities--;

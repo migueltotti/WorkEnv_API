@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Domain\" />
+      <ProjectReference Include="..\WorkEnv.Domain\WorkEnv.Domain.csproj" />
     </ItemGroup>
 
 </Project>

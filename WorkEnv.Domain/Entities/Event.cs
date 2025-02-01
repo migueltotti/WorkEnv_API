@@ -18,8 +18,9 @@ public class Event : Activity
         Privacy privacy,
         ActivityStatus activityStatus,
         Access accessOptions,
-        DateTime eventDate) 
-        : base(id, workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions)
+        DateTime eventDate,
+        Guid? adminId = null) 
+        : base(id, workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions, adminId)
     {
         if(eventDate < DateTime.Now)
             throw new ArgumentException("Event date cannot be earlier than today.");
