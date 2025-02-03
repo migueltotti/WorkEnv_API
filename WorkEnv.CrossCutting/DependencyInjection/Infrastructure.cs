@@ -14,6 +14,8 @@ public static partial class Infrastructure
 
         services.AddValidators();
 
+        services.AddAuthenticationServices(config);
+
         return services;
     }
 }
