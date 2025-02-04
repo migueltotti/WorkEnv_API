@@ -4,5 +4,4 @@ namespace WorkEnv.Domain.Interfaces;
 
 public interface IUserActivityRepository : IRepository<UserActivity>
 {
-    
 }
