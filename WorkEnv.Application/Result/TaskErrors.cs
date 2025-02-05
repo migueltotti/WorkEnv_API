@@ -1,6 +1,6 @@
 namespace WorkEnv.Application.Result;
 
-public class TaskErrors
+public class TaskErrors : ActivityErrors
 {
     
 }

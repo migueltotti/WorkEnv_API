@@ -1,6 +1,6 @@
 namespace WorkEnv.Application.Result;
 
-public class EventErrors
+public class EventErrors : ActivityErrors
 {
     
 }
