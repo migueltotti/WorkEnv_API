@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using WorkEnv.Domain.Entities;
 using WorkEnv.Domain.Interfaces;
 using WorkEnv.Infrastructure.Context;
@@ -21,5 +22,10 @@ public class UserRepository(WorkEnvDbContext context) : Repository<User>(context
     public async Task<User?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await GetAsync(u => u.Name.Equals(name), cancellationToken);
+    }
+    
+    public async Task<bool> EmailExists(string email, CancellationToken cancellationToken = default)
+    {
+        return await context.Users.AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }
 }

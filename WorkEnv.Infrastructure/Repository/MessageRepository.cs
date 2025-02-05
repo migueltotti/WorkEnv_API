@@ -14,10 +14,8 @@ public class MessageRepository(WorkEnvDbContext context) : Repository<Message>(c
             .FirstOrDefaultAsync(m => m.MessageId.Equals(messageId), cancellationToken);
     }
 
-    public async Task<Message?> GetByTitleAsync(string roleTitle, CancellationToken cancellationToken = default)
+    public async Task<Message?> GetByTitleAsync(string messageTitle, CancellationToken cancellationToken = default)
     {
-        return await context.Messages
-            .AsNoTracking()
-            .FirstOrDefaultAsync(m => m.Title.Contains(roleTitle), cancellationToken);
+        return await GetAsync(m => m.Title.Equals(messageTitle), cancellationToken);
     }
 }

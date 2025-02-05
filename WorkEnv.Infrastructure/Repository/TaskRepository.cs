@@ -13,6 +13,7 @@ public class TaskRepository(WorkEnvDbContext context) : Repository<Task>(context
         return await context.Tasks
             .AsNoTracking()
             .Include(t => t.Admin)
+            .Include(t => t.WorkSpace)
             .FirstOrDefaultAsync(x => x.Id == taskId, cancellationToken);
     }
 
@@ -21,6 +22,7 @@ public class TaskRepository(WorkEnvDbContext context) : Repository<Task>(context
         return await context.Tasks
             .AsNoTracking()
             .Include(t => t.Admin)
+            .Include(t => t.WorkSpace)
             .Include(t => t.UserActivities)
             .FirstOrDefaultAsync(x => x.Id == taskId, cancellationToken);
     }

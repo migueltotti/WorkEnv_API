@@ -12,6 +12,7 @@ public class EventRepository(WorkEnvDbContext context) : Repository<Event>(conte
         return await context.Events
             .AsNoTracking()
             .Include(e => e.Admin)
+            .Include(e => e.WorkSpace)
             .FirstOrDefaultAsync(x => x.Id == eventId, cancellationToken);
     }
 
@@ -20,6 +21,7 @@ public class EventRepository(WorkEnvDbContext context) : Repository<Event>(conte
         return await context.Events
             .AsNoTracking()
             .Include(e => e.Admin)
+            .Include(e => e.WorkSpace)
             .Include(e => e.UserActivities)
             .FirstOrDefaultAsync(x => x.Id == eventId, cancellationToken);
     }
