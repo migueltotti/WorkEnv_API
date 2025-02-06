@@ -1,6 +1,35 @@
 using System.ComponentModel.DataAnnotations;
+using MediatR;
 
 namespace WorkEnv.Application.Result;
+
+public class Result
+{
+    public readonly Error Error;
+    public readonly bool IsSuccess;
+
+    public Result(bool isSuccess)
+    {
+        if(isSuccess is false)
+            throw new ArgumentNullException("Result is Invalid!");
+        
+        IsSuccess = isSuccess;
+        Error = default;
+    }
+
+    public Result(Error error, bool isSuccess)
+    {
+        if ((isSuccess is false && error is null) ||
+            (isSuccess is true && error is not null))
+            throw new ArgumentNullException("Result is Invalid!");
+        
+        Error = error;
+        IsSuccess = isSuccess;
+    }
+    
+    public static Result Success() => new Result(true);
+    public static Result Failure(Error err) => new Result(err, false);
+}
 
 public class Result<TValue> where TValue : class
 {

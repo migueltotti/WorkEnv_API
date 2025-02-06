@@ -10,4 +10,25 @@
       <ProjectReference Include="..\WorkEnv.Domain\WorkEnv.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="CQRS\Activity\Command\" />
+      <Folder Include="CQRS\Event\Command\" />
+      <Folder Include="CQRS\Event\Query\" />
+      <Folder Include="CQRS\Message\Command\" />
+      <Folder Include="CQRS\Message\Query\" />
+      <Folder Include="CQRS\Role\Command\" />
+      <Folder Include="CQRS\Role\Query\" />
+      <Folder Include="CQRS\Task\Command\" />
+      <Folder Include="CQRS\Task\Query\" />
+      <Folder Include="CQRS\User\Command\Update\" />
+      <Folder Include="CQRS\WorkSpace\Command\" />
+      <Folder Include="CQRS\WorkSpace\Query\" />
+      <Folder Include="DTO\Activity\" />
+      <Folder Include="DTO\WorkSpace\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.4.1" />
+    </ItemGroup>
+
 </Project>

@@ -12,7 +12,11 @@ public static partial class Infrastructure
     {
         services.AddDbContext(config);
 
+        services.AddRepositories();
+
         services.AddValidators();
+
+        services.AddCQRS();
 
         services.AddAuthenticationServices(config);
 

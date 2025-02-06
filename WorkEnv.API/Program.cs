@@ -22,7 +22,7 @@ public class Program
         {
             options.AddPolicy("EnableCors", police =>
             {
-                police.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("X-Pagination").Build();
+                police.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
             });
         });
         

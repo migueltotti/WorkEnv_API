@@ -14,7 +14,17 @@ public static class UserErrors
         "User input is not in the correct format",
         HttpStatusCode.BadRequest);
     
-    public static Error UserNotFound() => new Error(
+    public static readonly Error IncorrectEmailFormat = new Error(
+        "UserEmailInputNotValid", 
+        "User email input is not in the correct format",
+        HttpStatusCode.BadRequest);
+    
+    public static readonly Error IncorrectNameFormat = new Error(
+        "UserNameInputNotValid", 
+        "User name input is not in the correct format",
+        HttpStatusCode.BadRequest);
+    
+    public static Error UserNotFound => new Error(
         "UserNotFound",
         "User with this signature not found.",
         HttpStatusCode.NotFound);
@@ -24,17 +34,17 @@ public static class UserErrors
         "Past Id does not match User id", 
         HttpStatusCode.BadRequest);
     
-    public static Error EmailExists() => new Error(
+    public static Error EmailExists => new Error(
         "UserEmailExists",
         "User with this email already exists.",
         HttpStatusCode.BadRequest);
     
-    public static Error PasswordMismatch() => new Error(
-        "UserPasswordMismatch",
-        "Past password does not match user's password.",
+    public static Error EqualPassword => new Error(
+        "UserEqualPassword",
+        "New password cannot be equal to older password.",
         HttpStatusCode.BadRequest);
     
-    public static Error OldPasswordMismatch() => new Error(
+    public static Error OldPasswordMismatch => new Error(
         "UserOldPasswordMismatch",
         "Past password does not match user's old password.",
         HttpStatusCode.BadRequest);

@@ -8,7 +8,6 @@ public interface IUnitOfWork
     public ITaskRepository TaskRepository { get; }
     public IMessageRepository MessageRepository { get; }
     public IRoleRepository RoleRepository { get; }
-    public IUserActivityRepository UserActivityRepository { get; }
-    void CommitChangesAsync(CancellationToken cancellationToken = default);
-    void Dispose();
+    Task CommitChangesAsync(CancellationToken cancellationToken = default);
+    Task Dispose();
 }
