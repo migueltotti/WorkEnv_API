@@ -24,7 +24,7 @@ public class UserRepository(WorkEnvDbContext context) : Repository<User>(context
         return await GetAsync(u => u.Name.Equals(name), cancellationToken);
     }
     
-    public async Task<bool> EmailExists(string email, CancellationToken cancellationToken = default)
+    public async Task<bool> VerifyEmail(string email, CancellationToken cancellationToken = default)
     {
         return await context.Users.AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }

@@ -24,7 +24,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
             request.Password is null)
             return Result<UserDTO>.Failure(UserErrors.DataIsNull);
 
-        var emailExists = await _uof.UserRepository.EmailExists(request.Email, cancellationToken);
+        var emailExists = await _uof.UserRepository.VerifyEmail(request.Email, cancellationToken);
         
         if(emailExists)
             return Result<UserDTO>.Failure(UserErrors.EmailExists);

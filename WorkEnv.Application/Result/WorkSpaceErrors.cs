@@ -23,4 +23,9 @@ public class WorkSpaceErrors
         "WorkSpaceIdMismatch", 
         "Past Id does not match WorkSpace id", 
         HttpStatusCode.BadRequest);
+    
+    public static readonly Error OwnerIdMismatch = new Error(
+        "WorkSpaceOwnerIdMismatch", 
+        "This UserId does not match WorkSpace OwnerId", 
+        HttpStatusCode.BadRequest);
 }

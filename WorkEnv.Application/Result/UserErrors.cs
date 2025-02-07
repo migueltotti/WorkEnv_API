@@ -39,6 +39,11 @@ public static class UserErrors
         "User with this email already exists.",
         HttpStatusCode.BadRequest);
     
+    public static Error EqualEmail => new Error(
+        "UserEmailExists",
+        "New email is equal to User email.",
+        HttpStatusCode.BadRequest);
+    
     public static Error EqualPassword => new Error(
         "UserEqualPassword",
         "New password cannot be equal to older password.",

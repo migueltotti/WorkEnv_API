@@ -1,6 +1,11 @@
+using System.Net;
+using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
+using WorkEnv.Application.CQRS.User.Command.ChangeName;
+using WorkEnv.Application.CQRS.User.Command.ChangePassword;
+using WorkEnv.Application.CQRS.User.Command.Delete;
 using WorkEnv.Application.CQRS.User.Command.Register;
 using WorkEnv.Application.CQRS.User.Query.GetAllQuery;
 using WorkEnv.Application.CQRS.User.Query.GetByEmail;
@@ -36,16 +41,16 @@ public class UsersController : Controller
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
     
-    [HttpGet("{userEmail}")]
-    public async Task<ActionResult<UserDTO>> GetByEmail(string userEmail)
+    [HttpGet("email")]
+    public async Task<ActionResult<UserDTO>> GetByEmail([FromQuery] string userEmail)
     {
         var result = await _sender.Send(new GetByEmailQuery(userEmail));
         
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
     
-    [HttpGet("{userName:}")]
-    public async Task<ActionResult<UserDTO>> GetByName(string userName)
+    [HttpGet("name")]
+    public async Task<ActionResult<UserDTO>> GetByName([FromQuery] string userName)
     {
         var result = await _sender.Send(new GetByNameQuery(userName));
         
@@ -60,11 +65,71 @@ public class UsersController : Controller
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
     
-    [HttpPut("{userId:guid}")]
-    public async Task<ActionResult<UserDTO>> GetByName(Guid userId, [FromBody] string newEmail)
+    [HttpPut("changeName/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangeName(Guid userId, ChangeNameCommand command)
     {
-        var result = await _sender.Send(new ChangeEmailCommand(userId, newEmail));
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
+            
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound)
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }
+    }
+    
+    [HttpPut("changeEmail/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangeEmail(Guid userId, ChangeEmailCommand command)
+    {
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
+            
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound)
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }
+    }
+    
+    [HttpPut("changePassword/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangePassword(Guid userId, ChangePasswordCommand command)
+    {
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
+            
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound)
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }
+    }
+    
+    [HttpDelete("{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> DeleteUser(Guid userId)
+    {
+        var result = await _sender.Send(new DeleteUserCommand(userId));
         
-        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        return result.IsSuccess ? Ok("User delete successfully!") : BadRequest(result.Error);
     }
 }
