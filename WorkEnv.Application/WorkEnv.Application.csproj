@@ -11,18 +11,33 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CQRS\Activity\Command\" />
-      <Folder Include="CQRS\Activity\Query\GetAllUsersQuery\" />
-      <Folder Include="CQRS\Event\Command\" />
-      <Folder Include="CQRS\Event\Query\" />
-      <Folder Include="CQRS\Message\Command\" />
-      <Folder Include="CQRS\Message\Query\" />
-      <Folder Include="CQRS\Role\Command\" />
-      <Folder Include="CQRS\Role\Query\" />
-      <Folder Include="CQRS\Task\Command\" />
-      <Folder Include="CQRS\Task\Query\" />
+      <Folder Include="CQRS\Activity\Command\ChangeAccessOption\" />
+      <Folder Include="CQRS\Activity\Command\ChangeAccessPassword\" />
+      <Folder Include="CQRS\Activity\Command\ChangeAdmin\" />
+      <Folder Include="CQRS\Activity\Command\ChangePrivacy\" />
+      <Folder Include="CQRS\Activity\Command\Create\" />
+      <Folder Include="CQRS\Activity\Command\Delete\" />
+      <Folder Include="CQRS\Activity\Command\GenerateAdminInviteCode\" />
+      <Folder Include="CQRS\Activity\Command\SendUserInvite\" />
+      <Folder Include="CQRS\Activity\Command\UpdateStatus\" />
+      <Folder Include="CQRS\Activity\Command\Update\" />
+      <Folder Include="CQRS\Activity\Command\UpgradeMaxNumberOfParticipants\" />
+      <Folder Include="CQRS\Event\Command\ChangeEventDate\" />
+      <Folder Include="CQRS\Message\Command\Create\" />
+      <Folder Include="CQRS\Message\Command\Delete\" />
+      <Folder Include="CQRS\Message\Command\Update\" />
+      <Folder Include="CQRS\Role\Command\Create\" />
+      <Folder Include="CQRS\Role\Command\Delete\" />
+      <Folder Include="CQRS\Role\Command\Update\" />
+      <Folder Include="CQRS\Task\Command\ChangeEndDate\" />
+      <Folder Include="CQRS\Task\Command\ChangeStartDate\" />
       <Folder Include="CQRS\User\Command\Update\" />
-      <Folder Include="CQRS\WorkSpace\Command\" />
+      <Folder Include="CQRS\WorkSpace\Command\AddEvent\" />
+      <Folder Include="CQRS\WorkSpace\Command\AddTask\" />
+      <Folder Include="CQRS\WorkSpace\Command\ChangeOwner\" />
+      <Folder Include="CQRS\WorkSpace\Command\RemoveActivity\" />
+      <Folder Include="CQRS\WorkSpace\Command\SendAdminInvite\" />
+      <Folder Include="CQRS\WorkSpace\Command\Update\" />
     </ItemGroup>
 
     <ItemGroup>

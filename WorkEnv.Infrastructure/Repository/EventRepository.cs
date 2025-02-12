@@ -23,6 +23,8 @@ public class EventRepository(WorkEnvDbContext context) : Repository<Event>(conte
             .Include(e => e.Admin)
             .Include(e => e.WorkSpace)
             .Include(e => e.UserActivities)
+                .ThenInclude(u => u.User)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == eventId, cancellationToken);
     }
 }

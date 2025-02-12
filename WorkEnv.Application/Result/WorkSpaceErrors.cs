@@ -28,4 +28,9 @@ public class WorkSpaceErrors
         "WorkSpaceOwnerIdMismatch", 
         "This UserId does not match WorkSpace OwnerId", 
         HttpStatusCode.BadRequest);
+    
+    public static readonly Error MasterCodeEmptyOrNull = new Error(
+        "WorkSpaceMasterCodeEmptyOrNull", 
+        "Master code is required.", 
+        HttpStatusCode.BadRequest);
 }

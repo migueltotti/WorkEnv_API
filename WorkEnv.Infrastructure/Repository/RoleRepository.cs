@@ -16,7 +16,7 @@ public class RoleRepository(WorkEnvDbContext context) : Repository<Role>(context
             .FirstOrDefaultAsync(r => r.RoleId.Equals(roleId), cancellationToken);
     }
 
-    public async Task<Role?> GetByNameAsync(Guid roleName, CancellationToken cancellationToken = default)
+    public async Task<Role?> GetByNameAsync(string roleName, CancellationToken cancellationToken = default)
     {
         return await GetAsync(r => roleName.Equals(r.Name), cancellationToken);
     }

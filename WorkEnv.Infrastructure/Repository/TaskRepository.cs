@@ -24,6 +24,8 @@ public class TaskRepository(WorkEnvDbContext context) : Repository<Task>(context
             .Include(t => t.Admin)
             .Include(t => t.WorkSpace)
             .Include(t => t.UserActivities)
+                .ThenInclude(u => u.User)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == taskId, cancellationToken);
     }
 }
