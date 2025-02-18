@@ -31,33 +31,18 @@ public class Task : Activity
         EndDate = endDate;
     }
 
-    public Task(
-        Guid id,
-        Guid workSpaceId,
-        int maxNumberOfParticipants,
-        Privacy privacy,
-        ActivityStatus activityStatus,
-        Access accessOptions,
-        DateTime startDate,
-        Guid? adminId = null)
-        : base(id, workSpaceId, maxNumberOfParticipants, privacy, activityStatus, accessOptions, adminId)
+    public void ChangeDate(Guid ownerOrAdminId, DateTime newStartDate, DateTime newEndDate)
     {
-        StartDate = startDate;
-    }
-
-    public void ChangeStartDate(DateTime newStartDate)
-    {
+        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        
         if (EndDate.Equals(newStartDate) || EndDate < newStartDate)
             throw new ArgumentException("The start date cannot be before the end date or equal end date.");
         
-        StartDate = newStartDate;
-    }
-
-    public void ChangeEndDate(DateTime newEndDate)
-    {
         if (StartDate.Equals(newEndDate) || StartDate > newEndDate)
             throw new ArgumentException("The end date cannot be before the start date or equal start date.");
         
-        StartDate = newEndDate;
+        StartDate = newStartDate;
+        EndDate = newEndDate;
     }
 }

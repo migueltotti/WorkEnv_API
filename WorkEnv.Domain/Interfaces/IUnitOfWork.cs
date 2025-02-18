@@ -4,6 +4,7 @@ public interface IUnitOfWork
 {
     public IUserRepository UserRepository { get; }
     public IWorkSpaceRepository WorkSpaceRepository { get; }
+    public IActicityRepository ActivityRepository { get; }
     public IEventRepository EventRepository { get; }
     public ITaskRepository TaskRepository { get; }
     public IMessageRepository MessageRepository { get; }

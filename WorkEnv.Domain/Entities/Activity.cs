@@ -40,6 +40,11 @@ public abstract class Activity
         AccessPassword = PasswordGenerator.GeneratePassword();
     }
     
+    public bool IsActivityFullOfUsers()
+    {
+        return MaxNumberOfParticipants == NumberOfParticipants;
+    } 
+    
     public void ChangeAdmin(Guid oldOwnerOrAdminId, Guid newAdminId)
     {
         if(!AdminId.Equals(oldOwnerOrAdminId) || !WorkSpace.OwnerId.Equals(oldOwnerOrAdminId))
@@ -48,8 +53,11 @@ public abstract class Activity
         AdminId = newAdminId;
     } 
     
-    public void UpgradeMaxNumberOfParticipants(int newMaxNumberOfParticipants)
+    public void UpgradeMaxNumberOfParticipants(Guid ownerOrAdminId, int newMaxNumberOfParticipants)
     {
+        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        
         if (newMaxNumberOfParticipants is <= 1)
             throw new ArgumentException("MaxNumberOfParticipants must be greater than 1");
         
@@ -74,7 +82,7 @@ public abstract class Activity
         AccessOptions = accessOptions;
     } 
     
-    public void ChangPrivacy(Guid ownerOrAdminId, Privacy privacy)
+    public void ChangePrivacy(Guid ownerOrAdminId, Privacy privacy)
     {
         if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
             throw new AccessViolationException("Invalid OwnerId or OwnerId !");
@@ -95,7 +103,9 @@ public abstract class Activity
         if(!WorkSpace.OwnerId.Equals(ownerId))
             throw new AccessViolationException("Invalid OwnerId!");
         
-        return new AdminInvite(new Random().Next(111111, 999999), DateTime.Now.AddDays(validationTimeInDays));
+        AdminInviteCode = new AdminInvite(new Random().Next(111111, 999999), DateTime.Now.AddDays(validationTimeInDays));
+
+        return AdminInviteCode;
     } 
     
     public void AddUser(UserActivity userActivity)

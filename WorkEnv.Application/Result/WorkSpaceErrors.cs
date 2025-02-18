@@ -29,6 +29,11 @@ public class WorkSpaceErrors
         "This UserId does not match WorkSpace OwnerId", 
         HttpStatusCode.BadRequest);
     
+    public static readonly Error IncorrectMasterCode = new Error(
+        "WorkSpaceIncorrectMasterCode", 
+        "Past master code does not match WorkSpace master code.", 
+        HttpStatusCode.BadRequest);
+    
     public static readonly Error MasterCodeEmptyOrNull = new Error(
         "WorkSpaceMasterCodeEmptyOrNull", 
         "Master code is required.", 

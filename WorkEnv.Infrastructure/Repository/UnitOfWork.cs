@@ -8,6 +8,7 @@ public class UnitOfWork : IUnitOfWork
     private WorkEnvDbContext? _context;
     private IUserRepository? _userRepository;
     private IWorkSpaceRepository? _workSpaceRepository;
+    private IActicityRepository? _activityRepository;
     private IEventRepository? _eventRepository;
     private ITaskRepository? _taskRepository;
     private IMessageRepository? _messageRepository;
@@ -33,6 +34,14 @@ public class UnitOfWork : IUnitOfWork
         get
         {
             return _workSpaceRepository = _workSpaceRepository ?? new WorkSpaceRepository(_context);
+        }
+    }
+    
+    public IActicityRepository ActivityRepository 
+    {
+        get
+        {
+            return _activityRepository = _activityRepository ?? new ActivityRepository(_context);
         }
     }
     

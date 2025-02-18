@@ -33,6 +33,7 @@ public class ActivityTest
             activityStatus,
             accessOptions,
             new DateTime(2025, 7, 15),
+            new DateTime(2025, 7, 16),
             adminId);
     }
 
@@ -71,10 +72,11 @@ public class ActivityTest
     {
        // Arrange
        var newMaxNumberOfParticipants = 0;
+       var adminId = eventTest.Id;
        // Act
        // Assert
-       Assert.Throws<ArgumentException>(() => eventTest.UpgradeMaxNumberOfParticipants(newMaxNumberOfParticipants));
-       Assert.Throws<ArgumentException>(() => taskTest.UpgradeMaxNumberOfParticipants(newMaxNumberOfParticipants));
+       Assert.Throws<ArgumentException>(() => eventTest.UpgradeMaxNumberOfParticipants(adminId, newMaxNumberOfParticipants));
+       Assert.Throws<ArgumentException>(() => taskTest.UpgradeMaxNumberOfParticipants(adminId, newMaxNumberOfParticipants));
     }
     
     [Fact]
@@ -82,10 +84,11 @@ public class ActivityTest
     {
         // Arrange
         var newMaxNumberOfParticipants = 2;
+        var adminId = eventTest.Id;
         
         // Act
-        eventTest.UpgradeMaxNumberOfParticipants(newMaxNumberOfParticipants);
-        taskTest.UpgradeMaxNumberOfParticipants(newMaxNumberOfParticipants);
+        eventTest.UpgradeMaxNumberOfParticipants(adminId, newMaxNumberOfParticipants);
+        taskTest.UpgradeMaxNumberOfParticipants(adminId, newMaxNumberOfParticipants);
         
         // Assert
         Assert.Equal(eventTest.MaxNumberOfParticipants, newMaxNumberOfParticipants);
