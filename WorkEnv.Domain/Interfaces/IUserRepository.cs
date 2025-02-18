@@ -9,6 +9,6 @@ public interface IUserRepository : IRepository<User>
     Task<User?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
     Task<bool> VerifyEmail(string email, CancellationToken cancellationToken = default);
     
-    Task<bool> SetRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default);
+    Task<bool> SetRefreshToken(Guid userId, string refreshToken, DateTime expirationTime, CancellationToken cancellationToken = default);
     Task<bool> ValidateRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default);
 }

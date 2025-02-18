@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkEnv.Infrastructure.Context;
@@ -11,9 +12,11 @@ using WorkEnv.Infrastructure.Context;
 namespace WorkEnv.Infrastructure.Migrations
 {
     [DbContext(typeof(WorkEnvDbContext))]
-    partial class WorkEnvDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250219020427_Refresh Token Expiration Time")]
+    partial class RefreshTokenExpirationTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

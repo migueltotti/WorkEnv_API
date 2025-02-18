@@ -14,6 +14,8 @@ public static partial class Infrastructure
 
         services.AddRepositories();
 
+        services.AddTokenManager();
+
         services.AddValidators();
 
         services.AddCQRS();

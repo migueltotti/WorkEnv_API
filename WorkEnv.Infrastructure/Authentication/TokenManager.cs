@@ -12,19 +12,21 @@ namespace WorkEnv.Infrastructure.Authentication;
 public class TokenManager : ITokenManager
 {
     private readonly IConfiguration _config;
+    private readonly JwtSecurityTokenHandler _tokenHandler;
 
     public TokenManager(IConfiguration config)
     {
         _config = config;
+        _tokenHandler = new JwtSecurityTokenHandler();
     }
 
-    public string GenerateAccessTokenAsync(User user)
+    public string GenerateAccessToken(User user)
     {
-        var jwtSettings = _config.GetSection("JwtSettings");
+        var jwtSettings = _config.GetSection("JWT");
         var secretKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(jwtSettings["SecretKey"] ?? string.Empty));
         
-        var expirationTimeInMinutes = jwtSettings.GetValue<int>("ExpirationTimeInMinutes");
+        var expirationTimeInMinutes = jwtSettings.GetValue<int>("TokenValidityInMinutes");
         
         var claims = new List<Claim>()
         {
@@ -44,7 +46,7 @@ public class TokenManager : ITokenManager
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string GenerateRefreshTokenAsync()
+    public string GenerateRefreshToken()
     {
         var secureRandomBytes = new byte[128];
         
@@ -55,5 +57,30 @@ public class TokenManager : ITokenManager
         var refreshToken = Convert.ToBase64String(secureRandomBytes);
         
         return refreshToken;
+    }
+    
+    public ClaimsPrincipal GetClaimsFromExpiredToken(string token)
+    {
+        var secretKey = _config.GetSection("JWT").GetValue<string>("SecretKey") 
+                        ?? throw new InvalidOperationException("Invalid secret key!");
+
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            ValidateLifetime = false
+        };
+        
+        var claims = _tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+            !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new SecurityTokenException("Invalid token");
+        }
+        
+        return claims;
     }
 }

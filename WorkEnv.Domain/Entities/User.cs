@@ -11,7 +11,8 @@ public class User
     public DateTime DateBirth { get; private set; }
     
     // Authentication
-    private string? _refreshToken;
+    public string? _refreshToken { get; private set; }
+    public DateTime _expirationTime { get; private set; }
     
     public ICollection<WorkSpace> WorkSpaces { get; private set; } = [];
     public ICollection<UserActivity> UserActivities { get; private set; } = [];
