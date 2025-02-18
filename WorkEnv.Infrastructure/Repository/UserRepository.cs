@@ -28,4 +28,31 @@ public class UserRepository(WorkEnvDbContext context) : Repository<User>(context
     {
         return await context.Users.AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }
+
+    public async Task<bool> SetRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
+    {
+        var result = await context.Database.ExecuteSqlInterpolatedAsync(
+            $"""
+             UPDATE Users
+             SET _refreshToken = {refreshToken}
+             WHERE UserId = {userId};
+             """, cancellationToken);
+
+        return result > 0;
+    }
+
+    public async Task<bool> ValidateRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
+    {
+        var _refreshToken = await context.Database.SqlQuery<string>(
+            $"""
+              SELECT _refreshToken
+              FROM Users
+              WHERE UserId = {userId} AND _refreshToken = {refreshToken};
+              """).FirstOrDefaultAsync(cancellationToken);
+
+        if (_refreshToken is null)
+            return false;
+        
+        return _refreshToken.Equals(refreshToken);
+    }
 }

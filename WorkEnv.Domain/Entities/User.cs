@@ -10,6 +10,9 @@ public class User
     public string? Password { get; private set; }
     public DateTime DateBirth { get; private set; }
     
+    // Authentication
+    private string? _refreshToken;
+    
     public ICollection<WorkSpace> WorkSpaces { get; private set; } = [];
     public ICollection<UserActivity> UserActivities { get; private set; } = [];
 

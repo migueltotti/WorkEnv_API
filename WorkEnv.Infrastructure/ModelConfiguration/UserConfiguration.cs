@@ -23,6 +23,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Password)
             .IsRequired()
             .HasMaxLength(30);
+        builder.Property<string>("_refreshToken")
+            .HasColumnName("_refreshToken")
+            .HasMaxLength(200);
 
         builder.HasIndex(u => u.Email)
             .IsUnique();
