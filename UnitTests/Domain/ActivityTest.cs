@@ -13,6 +13,7 @@ public class ActivityTest
     {
         var adminId = Guid.NewGuid();
         var workSpaceId = Guid.NewGuid();
+        var name = "ActivityTest";
         var maxNumberOfParticipants = 100;
         var privacy = Privacy.Public;
         var activityStatus = ActivityStatus.Created;
@@ -20,6 +21,7 @@ public class ActivityTest
         
         eventTest = new Event(Guid.NewGuid(),
             workSpaceId,
+            name,
             maxNumberOfParticipants,
             privacy,
             activityStatus,
@@ -28,6 +30,7 @@ public class ActivityTest
             adminId);
         taskTest = new Task(Guid.NewGuid(),
             workSpaceId,
+            name,
             maxNumberOfParticipants,
             privacy,
             activityStatus,
@@ -66,13 +69,53 @@ public class ActivityTest
         Assert.Equal(eventTest.AdminId, adminId);
         Assert.Equal(taskTest.AdminId, adminId);
     }*/
+    
+    [Fact]
+    public void ChangeName_Should_Throw_Exception_If_Name_Is_Null()
+    {
+        // Arrange
+        var adminId = eventTest.AdminId.Value;
+        string newName = null;
+        // Act
+        // Assert
+        Assert.Throws<ArgumentNullException>(() => eventTest.ChangeName(adminId, newName));
+        Assert.Throws<ArgumentNullException>(() => taskTest.ChangeName(adminId, newName));
+    }
+    
+    [Fact]
+    public void ChangeName_Should_Throw_Exception_If_Name_Is_Empty()
+    {
+        // Arrange
+        var adminId = eventTest.AdminId.Value;
+        string newName = String.Empty;
+        // Act
+        // Assert
+        Assert.Throws<ArgumentNullException>(() => eventTest.ChangeName(adminId, newName));
+        Assert.Throws<ArgumentNullException>(() => taskTest.ChangeName(adminId, newName));
+    }
+    
+    [Fact]
+    public void ChangeName_Should_ChangeName_If_Name_Is_Not_Null_Or_Empty()
+    {
+        // Arrange
+        var adminId = eventTest.AdminId.Value;
+        string newName = "New ActivityTest Name";
+        
+        // Act
+        eventTest.ChangeName(adminId, newName);
+        taskTest.ChangeName(adminId, newName);
+        
+        // Assert
+        Assert.Equal(eventTest.Name, newName);
+        Assert.Equal(taskTest.Name, newName);
+    }
 
     [Fact]
     public void UpgradeMaxNumberOfParticipants_Should_Throw_Exception_If_NewMaxNumberOfParticipants_Is_Less_Or_Equal_Than_One()
     {
        // Arrange
        var newMaxNumberOfParticipants = 0;
-       var adminId = eventTest.Id;
+       var adminId = eventTest.AdminId.Value;
        // Act
        // Assert
        Assert.Throws<ArgumentException>(() => eventTest.UpgradeMaxNumberOfParticipants(adminId, newMaxNumberOfParticipants));
@@ -84,7 +127,7 @@ public class ActivityTest
     {
         // Arrange
         var newMaxNumberOfParticipants = 2;
-        var adminId = eventTest.Id;
+        var adminId = eventTest.AdminId.Value;
         
         // Act
         eventTest.UpgradeMaxNumberOfParticipants(adminId, newMaxNumberOfParticipants);
