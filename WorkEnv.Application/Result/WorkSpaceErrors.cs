@@ -21,12 +21,17 @@ public class WorkSpaceErrors
     
     public static readonly Error IdMismatch = new Error(
         "WorkSpaceIdMismatch", 
-        "Past Id does not match WorkSpace id", 
+        "Past Id does not match WorkSpace id.", 
         HttpStatusCode.BadRequest);
     
     public static readonly Error OwnerIdMismatch = new Error(
+        "WorkSpaceRequestOwnerIdMismatch", 
+        "This UserId does not match WorkSpace OwnerId.", 
+        HttpStatusCode.BadRequest);
+    
+    public static readonly Error RequestOwnerIdMismatch = new Error(
         "WorkSpaceOwnerIdMismatch", 
-        "This UserId does not match WorkSpace OwnerId", 
+        "Query OwnerId does not match Body OwnerId.", 
         HttpStatusCode.BadRequest);
     
     public static readonly Error IncorrectMasterCode = new Error(

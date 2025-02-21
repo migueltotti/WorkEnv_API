@@ -1,4 +1,18 @@
+using System.Net;
+using System.Text.Json;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WorkEnv.Application.CQRS.WorkSpace.Command.ChangeOwner;
+using WorkEnv.Application.CQRS.WorkSpace.Command.Create;
+using WorkEnv.Application.CQRS.WorkSpace.Command.Delete;
+using WorkEnv.Application.CQRS.WorkSpace.Query.GetAll;
+using WorkEnv.Application.CQRS.WorkSpace.Query.GetById;
+using WorkEnv.Application.DTO.Task;
+using WorkEnv.Application.DTO.WorkSpace;
+using WorkEnv.Application.Result;
+using CreateEventCommand = WorkEnv.Application.CQRS.Event.Command.Create.CreateCommand;
+using CreateTaskCommand = WorkEnv.Application.CQRS.Task.Command.Create.CreateCommand;
+using WorkEnv.Domain.Entities;
 
 namespace WorkEnv.API.Controllers;
 
@@ -6,5 +20,131 @@ namespace WorkEnv.API.Controllers;
 [ApiController]
 public class WorkSpacesController : Controller
 {
+    private readonly ISender _sender;
+
+    public WorkSpacesController(ISender sender)
+    {
+        _sender = sender;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<WorkSpaceDTO>>> GetAll()
+    {
+        var result = await _sender.Send(new GetAllQuery());
+        
+        return Ok(result);
+    }
     
+    [HttpGet("User/{userId:guid}")]
+    public async Task<ActionResult<IEnumerable<WorkSpaceDTO>>> GetAll(Guid userId)
+    {
+        var result = await _sender.Send(new GetAllQuery());
+        
+        return Ok(result);
+    }
+    
+    [HttpGet("/{workSpaceId:guid}")]
+    public async Task<ActionResult<WorkSpaceDTO>> GetById(Guid workSpaceId)
+    {
+        var result = await _sender.Send(new GetByIdQuery(workSpaceId));
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<WorkSpaceDTO>> CreateWorkSpace([FromBody] CreateCommand command)
+    {
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }
+    }
+    
+    [HttpPut("/{workSpaceId:guid}")]
+    public async Task<ActionResult<WorkSpaceDTO>> ChangeOwner(Guid workSpaceId, [FromBody] ChangeOwnerCommand command)
+    {
+        if(!workSpaceId.Equals(command.workSpaceId))
+            return BadRequest(WorkSpaceErrors.RequestOwnerIdMismatch);
+        
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok("WorkSpace Owner changed successfully!");
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound) 
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }      
+    }
+    
+    [HttpPost("/Event/{workSpaceOwnerId:guid}")]
+    public async Task<ActionResult<EventDTO>> CreateEvent(Guid workSpaceOwnerId, [FromBody] CreateEventCommand command)
+    {
+        if (!workSpaceOwnerId.Equals(command.ownerId))
+            return BadRequest(WorkSpaceErrors.RequestOwnerIdMismatch);
+        
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound) 
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }     
+    }
+    
+    [HttpPost("/Task/{workSpaceOwnerId:guid}")]
+    public async Task<ActionResult<TaskDTO>> CreateTask(Guid workSpaceOwnerId, [FromBody] CreateTaskCommand command)
+    {
+        if (!workSpaceOwnerId.Equals(command.ownerId))
+            return BadRequest(WorkSpaceErrors.RequestOwnerIdMismatch);
+        
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound) 
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }     
+    }
+    
+    [HttpDelete("/{workSpaceId:guid}")]
+    public async Task<ActionResult<WorkSpaceDTO>> DeleteWorkSpace(Guid workSpaceId, [FromBody] DeleteCommand command)
+    {
+        if(!workSpaceId.Equals(command.workSpaceId))
+            return BadRequest(WorkSpaceErrors.RequestOwnerIdMismatch);
+        
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok("WorkSpace deleted successfully!");
+            case false:
+                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound) 
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        } 
+    }
 }
