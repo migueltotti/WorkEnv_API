@@ -10,6 +10,7 @@ public abstract class Activity
     public Guid Id { get; private set; }
     public Guid? AdminId { get; private set; }
     public Guid WorkSpaceId { get; private set; }
+    public string Name { get; private set; }
     public int NumberOfParticipants { get; private set; }
     public int MaxNumberOfParticipants { get; private set; }
     public Privacy Privacy { get; private set; } 
@@ -27,11 +28,12 @@ public abstract class Activity
     {
     }
 
-    protected Activity(Guid id, Guid workSpaceId, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions, Guid? adminId = null)
+    protected Activity(Guid id, Guid workSpaceId, string name, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions, Guid? adminId = null)
     {
         Id = id;
         AdminId = adminId;
         WorkSpaceId = workSpaceId;
+        Name = name;
         MaxNumberOfParticipants = maxNumberOfParticipants;
         Privacy = privacy;
         NumberOfParticipants = 1;
@@ -53,10 +55,20 @@ public abstract class Activity
         AdminId = newAdminId;
     } 
     
+    public void ChangeName(Guid ownerOrAdminId, string newName)
+    {
+        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid AdminId or OwnerId !");
+        
+        if(String.IsNullOrEmpty(newName)) throw new ArgumentNullException("Name cannot be empty or null!");
+        
+        Name = newName;
+    } 
+    
     public void UpgradeMaxNumberOfParticipants(Guid ownerOrAdminId, int newMaxNumberOfParticipants)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid AdminId or OwnerId !");
         
         if (newMaxNumberOfParticipants is <= 1)
             throw new ArgumentException("MaxNumberOfParticipants must be greater than 1");
@@ -66,8 +78,8 @@ public abstract class Activity
     
     public string ChangeAccessPassword(Guid ownerOrAdminId)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid AdminId or OwnerId !");
             
         AccessPassword = PasswordGenerator.GeneratePassword();
 
@@ -76,24 +88,24 @@ public abstract class Activity
     
     public void ChangeAccessOptions(Guid ownerOrAdminId, Access accessOptions)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid AdminId or OwnerId !");
         
         AccessOptions = accessOptions;
     } 
     
     public void ChangePrivacy(Guid ownerOrAdminId, Privacy privacy)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid AdminId or OwnerId !");
 
         Privacy = privacy;
     } 
     
     public void UpdateStatus(Guid ownerOrAdminId, ActivityStatus activityStatus)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
+            throw new AccessViolationException("Invalid AdminId or OwnerId !");
         
         ActivityStatus = activityStatus;
     } 

@@ -20,6 +20,9 @@ public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
         
         builder.Property(a => a.WorkSpaceId)
             .IsRequired();
+        builder.Property(a => a.Name)
+            .HasMaxLength(100)
+            .IsRequired();
         builder.Property(a => a.NumberOfParticipants)
             .HasDefaultValue(1);
         builder.Property(a => a.MaxNumberOfParticipants)
