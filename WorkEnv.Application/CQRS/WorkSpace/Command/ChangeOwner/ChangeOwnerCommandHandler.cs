@@ -15,7 +15,7 @@ public class ChangeOwnerCommandHandler : IRequestHandler<ChangeOwnerCommand, Res
 
     public async Task<Result.Result> Handle(ChangeOwnerCommand request, CancellationToken cancellationToken)
     {
-        var workSpace = await _uof.WorkSpaceRepository.GetByIdAsync(request.wordSpaceId, cancellationToken);
+        var workSpace = await _uof.WorkSpaceRepository.GetByIdAsync(request.workSpaceId, cancellationToken);
 
         if (workSpace is null)
             return Result.Result.Failure(WorkSpaceErrors.WorkSpaceNotFound);
