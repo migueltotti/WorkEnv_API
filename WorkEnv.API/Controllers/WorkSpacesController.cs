@@ -3,7 +3,7 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.Application.CQRS.WorkSpace.Command.ChangeOwner;
-using WorkEnv.Application.CQRS.WorkSpace.Command.Create;
+using CreateWorkSpaceCommand = WorkEnv.Application.CQRS.WorkSpace.Command.Create.CreateCommand;
 using WorkEnv.Application.CQRS.WorkSpace.Command.Delete;
 using WorkEnv.Application.CQRS.WorkSpace.Query.GetAll;
 using WorkEnv.Application.CQRS.WorkSpace.Query.GetById;
@@ -12,7 +12,6 @@ using WorkEnv.Application.DTO.WorkSpace;
 using WorkEnv.Application.Result;
 using CreateEventCommand = WorkEnv.Application.CQRS.Event.Command.Create.CreateCommand;
 using CreateTaskCommand = WorkEnv.Application.CQRS.Task.Command.Create.CreateCommand;
-using WorkEnv.Domain.Entities;
 
 namespace WorkEnv.API.Controllers;
 
@@ -52,7 +51,7 @@ public class WorkSpacesController : Controller
     }
     
     [HttpPost]
-    public async Task<ActionResult<WorkSpaceDTO>> CreateWorkSpace([FromBody] CreateCommand command)
+    public async Task<ActionResult<WorkSpaceDTO>> CreateWorkSpace([FromBody] CreateWorkSpaceCommand command)
     {
         var result = await _sender.Send(command);
 
