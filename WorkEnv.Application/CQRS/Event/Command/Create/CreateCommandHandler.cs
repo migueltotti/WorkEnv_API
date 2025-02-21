@@ -22,6 +22,9 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<EventD
         if(workSpace is null)
             return Result<EventDTO>.Failure(WorkSpaceErrors.WorkSpaceNotFound);
 
+        if(!workSpace.OwnerId.Equals(request.ownerId))
+            return Result<EventDTO>.Failure(WorkSpaceErrors.OwnerIdMismatch);
+        
         if (request.adminId is not null)
         {
             var admin = await _uof.UserRepository.GetByIdAsync(request.adminId.Value, cancellationToken);
@@ -33,6 +36,7 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<EventD
         var @event = new Domain.Entities.Event(
             Guid.NewGuid(),
             request.workSpaceId,
+            request.name,
             request.maxNumberOfParticipants,
             request.privacy,
             request.activityStatus,

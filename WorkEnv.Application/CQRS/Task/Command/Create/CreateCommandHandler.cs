@@ -22,6 +22,9 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<TaskDT
         if(workSpace is null)
             return Result<TaskDTO>.Failure(WorkSpaceErrors.WorkSpaceNotFound);
 
+        if(!workSpace.OwnerId.Equals(request.ownerId))
+            return Result<TaskDTO>.Failure(WorkSpaceErrors.OwnerIdMismatch);
+        
         if (request.adminId is not null)
         {
             var admin = await _uof.UserRepository.GetByIdAsync(request.adminId.Value, cancellationToken);
@@ -33,6 +36,7 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<TaskDT
         var task = new Domain.Entities.Task(
             Guid.NewGuid(),
             request.workSpaceId,
+            request.name,
             request.maxNumberOfParticipants,
             request.privacy,
             request.activityStatus,
