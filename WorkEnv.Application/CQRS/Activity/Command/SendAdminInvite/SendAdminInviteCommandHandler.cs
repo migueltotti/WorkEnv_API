@@ -28,7 +28,7 @@ public class SendAdminInviteCommandHandler : IRequestHandler<SendAdminInviteComm
         if(owner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        var admin = await _uof.UserRepository.GetByIdAsync(request.adminId, cancellationToken);
+        var admin = await _uof.UserRepository.GetByIdAsync(request.newAdminId, cancellationToken);
         
         if(admin is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
