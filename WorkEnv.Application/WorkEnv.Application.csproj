@@ -10,4 +10,20 @@
       <ProjectReference Include="..\WorkEnv.Domain\WorkEnv.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="CQRS\Activity\Command\Update\" />
+      <Folder Include="CQRS\Message\Command\Update\" />
+      <Folder Include="CQRS\Role\Command\Update\" />
+      <Folder Include="CQRS\User\Command\Update\" />
+      <Folder Include="CQRS\WorkSpace\Command\AddEvent\" />
+      <Folder Include="CQRS\WorkSpace\Command\AddTask\" />
+      <Folder Include="CQRS\WorkSpace\Command\RemoveActivity\" />
+      <Folder Include="CQRS\WorkSpace\Command\Update\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.4.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.1" />
+    </ItemGroup>
+
 </Project>
