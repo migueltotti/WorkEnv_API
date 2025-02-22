@@ -55,7 +55,7 @@ public class ActivitiesController : Controller
         return result.IsSuccess ? Ok(result.Value) : NotFound(JsonSerializer.SerializeToElement(result.Error));
     }
     
-    [HttpGet("name")]
+    [HttpGet]
     public async Task<ActionResult<TaskDTO>> GetByName([FromQuery] string name)
     {
         var activities = await _sender.Send(new GetByNameQuery(name));
