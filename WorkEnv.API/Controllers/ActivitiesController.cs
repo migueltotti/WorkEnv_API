@@ -9,6 +9,7 @@ using WorkEnv.Application.CQRS.Activity.Command.Delete;
 using WorkEnv.Application.CQRS.Activity.Command.SendAdminInvite;
 using WorkEnv.Application.CQRS.Activity.Command.SendUserInvite;
 using WorkEnv.Application.CQRS.Activity.Command.UpdateStatus;
+using WorkEnv.Application.CQRS.Activity.Command.UpgradeMaxNumberOfParticipants;
 using WorkEnv.Application.CQRS.Activity.Query.GetAll;
 using WorkEnv.Application.CQRS.Activity.Query.GetByName;
 using WorkEnv.Application.CQRS.Message.Command.Create;
@@ -162,7 +163,7 @@ public class ActivitiesController : Controller
         switch (result.IsSuccess)
         {
             case true:
-                return Ok($"Activity with id = {activityId} changed Access Password successfully!");
+                return Ok(result.Value);
             case false:
                 if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
                     return NotFound(JsonSerializer.SerializeToElement(result.Error));
@@ -171,7 +172,7 @@ public class ActivitiesController : Controller
         }
     }
     
-    [HttpPut("ChangeAccessPassword/{activityId:guid}")]
+    [HttpPut("ChangePrivacy/{activityId:guid}")]
     public async Task<ActionResult> ChangePrivacy(
         Guid activityId,
         [FromBody] ChangePrivacyCommand command)
@@ -207,6 +208,28 @@ public class ActivitiesController : Controller
         {
             case true:
                 return Ok($"Activity with id = {activityId} updated Status successfully!");
+            case false:
+                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }
+    }
+    
+    [HttpPut("UpgradeMaxNumberOfParticipants/{activityId:guid}")]
+    public async Task<ActionResult> UpgradeMaxNumberOfParticipants(
+        Guid activityId,
+        [FromBody] UpgradeMaxNumberOfParticipantsCommand command)
+    {
+        if(!command.activityId.Equals(activityId))
+            return BadRequest(JsonSerializer.SerializeToElement(ActivityErrors.IdMismatch));
+        
+        var result = await _sender.Send(command);
+
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok($"Activity with id = {activityId} updated Max Number Of Participants successfully!");
             case false:
                 if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
                     return NotFound(JsonSerializer.SerializeToElement(result.Error));
