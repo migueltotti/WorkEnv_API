@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WorkEnv.Application\WorkEnv.Application.csproj" />
       <ProjectReference Include="..\WorkEnv.Domain\WorkEnv.Domain.csproj" />
     </ItemGroup>
 

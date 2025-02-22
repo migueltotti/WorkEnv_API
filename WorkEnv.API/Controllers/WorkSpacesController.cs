@@ -6,6 +6,8 @@ using WorkEnv.Application.CQRS.WorkSpace.Command.ChangeOwner;
 using CreateWorkSpaceCommand = WorkEnv.Application.CQRS.WorkSpace.Command.Create.CreateCommand;
 using WorkEnv.Application.CQRS.WorkSpace.Command.Delete;
 using WorkEnv.Application.CQRS.WorkSpace.Query.GetAll;
+using WorkEnv.Application.CQRS.WorkSpace.Query.GetAllActivitiesByWorkSpaceId;
+using WorkEnv.Application.CQRS.WorkSpace.Query.GetAllByUserId;
 using WorkEnv.Application.CQRS.WorkSpace.Query.GetById;
 using WorkEnv.Application.DTO.Task;
 using WorkEnv.Application.DTO.WorkSpace;
@@ -35,11 +37,33 @@ public class WorkSpacesController : Controller
     }
     
     [HttpGet("User/{userId:guid}")]
-    public async Task<ActionResult<IEnumerable<WorkSpaceDTO>>> GetAll(Guid userId)
+    public async Task<ActionResult<IEnumerable<WorkSpaceDTO>>> GetAllByUserId(Guid userId)
     {
-        var result = await _sender.Send(new GetAllQuery());
+        var result = await _sender.Send(new GetAllByUserIdQuery(userId));
         
         return Ok(result);
+    }
+    
+    [HttpGet("Activities/{workSpaceId:guid}")]
+    public async Task<ActionResult<IEnumerable<WorkSpaceDTO>>> GetAllActivitiesByWorkSpaceId(
+        Guid workSpaceId,
+        [FromQuery] GetAllActivitiesByWorkSpaceIdQuery query)
+    {
+        if(!workSpaceId.Equals(query.workSpaceId))
+            return BadRequest(WorkSpaceErrors.RequestOwnerIdMismatch);
+        
+        var result = await _sender.Send(query);
+        
+        switch (result.IsSuccess)
+        {
+            case true:
+                return Ok(result.Value);
+            case false:
+                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
+                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
+                
+                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
+        }
     }
     
     [HttpGet("/{workSpaceId:guid}")]
