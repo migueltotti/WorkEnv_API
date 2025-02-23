@@ -12,6 +12,8 @@ public static partial class Infrastructure
     {
         services.AddDbContext(config);
 
+        services.AddCache(config);
+        
         services.AddRepositories();
 
         services.AddTokenManager();
