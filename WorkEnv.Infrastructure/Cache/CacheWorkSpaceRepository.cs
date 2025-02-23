@@ -34,9 +34,15 @@ public class CacheWorkSpaceRepository : IWorkSpaceRepository
 
             if (entity is null) return entity;
 
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            };
+            
             await _cache.SetStringAsync(
-                key,
+                key, 
                 JsonSerializer.Serialize(entity),
+                cacheOptions,
                 cancellationToken);
             
             return entity;

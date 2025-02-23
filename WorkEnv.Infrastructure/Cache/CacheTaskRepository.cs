@@ -33,9 +33,15 @@ public class CacheTaskRepository : ITaskRepository
 
             if (entity is null) return entity;
             
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            };
+            
             await _cache.SetStringAsync(
                 key, 
-                JsonSerializer.Serialize(entity), 
+                JsonSerializer.Serialize(entity),
+                cacheOptions,
                 cancellationToken);
             
             return entity;
