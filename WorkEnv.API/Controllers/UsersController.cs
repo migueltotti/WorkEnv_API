@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WorkEnv.API.Response;
 using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
 using WorkEnv.Application.CQRS.User.Command.ChangeName;
 using WorkEnv.Application.CQRS.User.Command.ChangePassword;
@@ -38,7 +39,7 @@ public class UsersController : Controller
     {
         var result = await _sender.Send(new GetByIdQuery(userId));
         
-        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
     
     [HttpGet("email")]
@@ -46,7 +47,7 @@ public class UsersController : Controller
     {
         var result = await _sender.Send(new GetByEmailQuery(userEmail));
         
-        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
     
     [HttpGet("name")]
@@ -54,7 +55,7 @@ public class UsersController : Controller
     {
         var result = await _sender.Send(new GetByNameQuery(userName));
         
-        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpPost]
@@ -62,7 +63,9 @@ public class UsersController : Controller
     {
         var result = await _sender.Send(command);
         
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? 
+            CreatedAtRoute("GetUserById", new { userId = result.Value.UserId}, result.Value)
+            : result.ToProblemDetails();
     }
     
     [HttpPut("changeName/{userId:guid}")]
@@ -73,16 +76,7 @@ public class UsersController : Controller
             
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok(result.Value);
-            case false:
-                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
     
     [HttpPut("changeEmail/{userId:guid}")]
@@ -93,16 +87,7 @@ public class UsersController : Controller
             
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok(result.Value);
-            case false:
-                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
     
     [HttpPut("changePassword/{userId:guid}")]
@@ -113,23 +98,14 @@ public class UsersController : Controller
             
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok(result.Value);
-            case false:
-                if(result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
     
     [HttpDelete("{userId:guid}")]
     public async Task<ActionResult<UserDTO>> DeleteUser(Guid userId)
     {
         var result = await _sender.Send(new DeleteUserCommand(userId));
-        
-        return result.IsSuccess ? Ok("User delete successfully!") : BadRequest(result.Error);
+
+        return result.IsSuccess ? Ok("User delete successfully!") : result.ToProblemDetails();
     }
 }

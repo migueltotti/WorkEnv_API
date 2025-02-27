@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WorkEnv.API.Response;
 using WorkEnv.Application.CQRS.Activity.Command.ChangeAccessOption;
 using WorkEnv.Application.CQRS.Activity.Command.ChangeAccessPassword;
 using WorkEnv.Application.CQRS.Activity.Command.ChangePrivacy;
@@ -40,23 +41,23 @@ public class ActivitiesController : Controller
         return Ok(await _sender.Send(new GetAllQuery()));
     }
     
-    [HttpGet("Task/{taskId:guid}")]
+    [HttpGet("task/{taskId:guid}")]
     public async Task<ActionResult<TaskDTO>> GetTaskById(Guid taskId)
     {
         var result = await _sender.Send(new GetTaskByIdQuery(taskId));
         
-        return result.IsSuccess ? Ok(result.Value) : NotFound(JsonSerializer.SerializeToElement(result.Error));
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();  
     }
     
-    [HttpGet("Event/{taskId:guid}")]
-    public async Task<ActionResult<TaskDTO>> GetEventById(Guid taskId)
+    [HttpGet("event/{taskId:guid}")]
+    public async Task<ActionResult<EventDTO>> GetEventById(Guid taskId)
     {
         var result = await _sender.Send(new GetEventByIdQuery(taskId));
         
-        return result.IsSuccess ? Ok(result.Value) : NotFound(JsonSerializer.SerializeToElement(result.Error));
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();  
     }
     
-    [HttpGet]
+    [HttpGet("name")]
     public async Task<ActionResult<TaskDTO>> GetByName([FromQuery] string name)
     {
         var activities = await _sender.Send(new GetByNameQuery(name));
@@ -64,7 +65,7 @@ public class ActivitiesController : Controller
         return Ok(activities);
     }
 
-    [HttpPost("SendAdminInvite/{activityId:guid}")]
+    [HttpPost("sendAdminInvite/{activityId:guid}")]
     public async Task<ActionResult> SendAdminInvite(
         Guid activityId,
         [FromBody] SendAdminInviteCommand command)
@@ -74,19 +75,11 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"Activity with id = {activityId} sent Admin Invite successfully!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"Activity with id = {activityId} sent Admin Invite successfully!")
+            : result.ToProblemDetails();  
     }
     
-    [HttpPost("CreateMessage/{activityId:guid}")]
+    [HttpPost("createMessage/{activityId:guid}")]
     public async Task<ActionResult<MessageDTO>> CreateMessage(
         Guid activityId,
         [FromBody] CreateCommand command)
@@ -96,19 +89,10 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok(result.Value);
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();  
     }
     
-    [HttpPost("InviteUser/{activityId:guid}")]
+    [HttpPost("inviteUser/{activityId:guid}")]
     public async Task<ActionResult> InviteUser(Guid activityId, [FromBody] SendUserInviteCommand command)
     {
         if(!command.activityId.Equals(activityId))
@@ -116,19 +100,11 @@ public class ActivitiesController : Controller
 
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"User with id = {command.userId} was Invites successfully to Activity with id = {activityId}!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"User with id = {command.userId} was Invites successfully to Activity with id = {activityId}!")
+            : result.ToProblemDetails();  
     }
     
-    [HttpPut("ChangeAccessOptions/{activityId:guid}")]
+    [HttpPut("changeAccessOptions/{activityId:guid}")]
     public async Task<ActionResult> ChangeAccessOptions(
         Guid activityId,
         [FromBody] ChangeAccessOptionsCommand command)
@@ -138,20 +114,12 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"Activity with id = {activityId} changed Access Options successfully!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"Activity with id = {activityId} changed Access Options successfully!")
+            : result.ToProblemDetails();  
     }
     
-    [HttpPut("ChangeAccessPassword/{activityId:guid}")]
-    public async Task<ActionResult> ChangeAccessPassword(
+    [HttpPut("changeAccessPassword/{activityId:guid}")]
+    public async Task<ActionResult<object>> ChangeAccessPassword(
         Guid activityId,
         [FromBody] ChangeAccessPasswordCommand command)
     {
@@ -160,19 +128,11 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok(result.Value);
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok(result.Value)
+            : result.ToProblemDetails(); 
     }
     
-    [HttpPut("ChangePrivacy/{activityId:guid}")]
+    [HttpPut("changePrivacy/{activityId:guid}")]
     public async Task<ActionResult> ChangePrivacy(
         Guid activityId,
         [FromBody] ChangePrivacyCommand command)
@@ -182,19 +142,11 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"Activity with id = {activityId} changed Privacy successfully!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"Activity with id = {activityId} changed Privacy successfully!")
+            : result.ToProblemDetails(); 
     }
     
-    [HttpPut("UpdateStatus/{activityId:guid}")]
+    [HttpPut("updateStatus/{activityId:guid}")]
     public async Task<ActionResult> UpdateStatus(
         Guid activityId,
         [FromBody] UpdateStatusCommand command)
@@ -204,19 +156,11 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"Activity with id = {activityId} updated Status successfully!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"Activity with id = {activityId} updated Status successfully!")
+            : result.ToProblemDetails(); 
     }
     
-    [HttpPut("UpgradeMaxNumberOfParticipants/{activityId:guid}")]
+    [HttpPut("upgradeMaxNumberOfParticipants/{activityId:guid}")]
     public async Task<ActionResult> UpgradeMaxNumberOfParticipants(
         Guid activityId,
         [FromBody] UpgradeMaxNumberOfParticipantsCommand command)
@@ -226,16 +170,8 @@ public class ActivitiesController : Controller
         
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"Activity with id = {activityId} updated Max Number Of Participants successfully!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"Activity with id = {activityId} updated Max Number of Participants successfully!")
+            : result.ToProblemDetails(); 
     }
     
     [HttpDelete("{activityId:guid}")]
@@ -246,15 +182,7 @@ public class ActivitiesController : Controller
 
         var result = await _sender.Send(command);
 
-        switch (result.IsSuccess)
-        {
-            case true:
-                return Ok($"Activity with id = {activityId} Deleted successfully!");
-            case false:
-                if (result.Error.HttpStatusCode == HttpStatusCode.NotFound)
-                    return NotFound(JsonSerializer.SerializeToElement(result.Error));
-                
-                return BadRequest(JsonSerializer.SerializeToElement(result.Error));
-        }
+        return result.IsSuccess ? Ok($"Activity with id = {activityId} Deleted successfully!")
+            : result.ToProblemDetails();
     }
 }
