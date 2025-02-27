@@ -19,8 +19,6 @@
       <Folder Include="CQRS\WorkSpace\Command\AddTask\" />
       <Folder Include="CQRS\WorkSpace\Command\RemoveActivity\" />
       <Folder Include="CQRS\WorkSpace\Command\Update\" />
-      <Folder Include="Validation\Message\" />
-      <Folder Include="Validation\Role\" />
     </ItemGroup>
 
     <ItemGroup>

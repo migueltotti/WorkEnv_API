@@ -13,6 +13,11 @@ public class CreateCommandValidator : AbstractValidator<CreateCommand>
             .WithMessage("WorkSpace Id must be not empty.")
             .NotNull()
             .WithMessage("WorkSpace Id must be not null.");
+        RuleFor(c => c.ownerId)
+            .NotEmpty()
+            .WithMessage("Owner Id must be not empty.")
+            .NotNull()
+            .WithMessage("Owner Id must be not null.");
         RuleFor(c => c.maxNumberOfParticipants)
             .GreaterThan(0)
             .WithMessage("Max number of participants must be greater than 0.")
