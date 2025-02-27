@@ -7,6 +7,7 @@ public class Result
 {
     public readonly Error Error;
     public readonly bool IsSuccess;
+    public readonly List<ValidationResult> ValidationResults;
 
     public Result(bool isSuccess)
     {
@@ -15,6 +16,7 @@ public class Result
         
         IsSuccess = isSuccess;
         Error = default;
+        ValidationResults = [];
     }
 
     public Result(Error error, bool isSuccess)
@@ -25,6 +27,19 @@ public class Result
         
         Error = error;
         IsSuccess = isSuccess;
+        ValidationResults = [];
+    }
+    
+    public Result(Error error, List<ValidationResult> validationResults, bool isSuccess)
+    {
+        if ((isSuccess is false && error is null) ||
+            (isSuccess is true && error is not null) ||
+            (validationResults.Count > 0))
+            throw new ArgumentNullException("Result is Invalid!");
+        
+        Error = error;
+        IsSuccess = isSuccess;
+        ValidationResults = validationResults;
     }
     
     public static Result Success() => new Result(true);
@@ -47,6 +62,7 @@ public class Result<TValue> where TValue : class
         Value = value;
         IsSuccess = isSuccess;
         Error = Error.None;
+        ValidationResults = [];
     }
 
     public Result(Error error, bool isSuccess)
@@ -58,6 +74,7 @@ public class Result<TValue> where TValue : class
         Error = error;
         IsSuccess = isSuccess;
         Value = default;
+        ValidationResults = [];
     }
 
     public Result(Error error, List<ValidationResult> validationResults, bool isSuccess)
