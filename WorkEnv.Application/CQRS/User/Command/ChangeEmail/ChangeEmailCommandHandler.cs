@@ -25,8 +25,6 @@ public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, Res
 
         if (user.Email.Equals(request.newEmail))
             return Result<UserDTO>.Failure(UserErrors.EqualEmail);
-
-        // TODO: validate the email format
         
         var emailExists = await _uof.UserRepository.VerifyEmail(request.newEmail, cancellationToken);
         

@@ -29,8 +29,6 @@ public class ChangeTaskDateCommandHandler : IRequestHandler<ChangeTaskDateComman
         if (adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        // TODO: Validate the start and end Date.
-        
         task.ChangeDate(adminOrOwner.UserId, request.newStartDate, request.newEndDate);
         
         _uof.TaskRepository.Update(task);
