@@ -19,6 +19,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
     public async Task<Result<UserDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         // Validations
+        // TODO: Update with validator
         if (request.Name is null ||
             request.Email is null ||
             request.Password is null)
