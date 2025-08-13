@@ -18,32 +18,6 @@ public class Program
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-        
-        builder.Services.AddCors( options =>
-        {
-            options.AddPolicy("EnableCors", police =>
-            {
-                police.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
-            });
-        });
-        
-        builder.Services.AddRateLimiter(options =>
-        {
-            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-
-            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpcontext =>
-                RateLimitPartition.GetTokenBucketLimiter(httpcontext.User.Identity?.Name ??
-                                                         httpcontext.Request.Headers.Host.ToString(),
-                    partition => new TokenBucketRateLimiterOptions
-                    {
-                        TokenLimit = 30,
-                        ReplenishmentPeriod = TimeSpan.FromSeconds(5),
-                        TokensPerPeriod = 26,
-                        AutoReplenishment = true,
-                        QueueLimit = 0,
-                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                    }));
-        });
 
         builder.Services.AddInfrastructure(builder.Configuration);
 

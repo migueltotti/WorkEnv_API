@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,9 +11,11 @@ public static partial class Infrastructure
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
+        services.AddCORS();
+        
+        services.AddRateLimiter();
+        
         services.AddDbContext(config);
-
-        services.AddCache(config);
         
         services.AddRepositories();
 
