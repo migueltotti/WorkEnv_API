@@ -31,7 +31,7 @@ public class AcceptUserInviteCommandHandler : IRequestHandler<AcceptUserInviteCo
         if(activity.IsActivityFullOfUsers())
             return Result.Result.Failure(ActivityErrors.IncorrectAccessPassword);
         
-        if (activity.AccessOptions.Equals(Access.PasswordRequired))
+        if (activity.AccessOptions.Equals(EventAccessOption.PasswordRequired))
         {
             if (String.IsNullOrEmpty(request.password))
                 return Result.Result.Failure(ActivityErrors.NullOrEmptyPassword);

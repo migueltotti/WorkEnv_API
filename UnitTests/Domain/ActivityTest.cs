@@ -1,6 +1,7 @@
 using WorkEnv.Domain.Entities;
 using WorkEnv.Domain.Enum;
 using Task = WorkEnv.Domain.Entities.Task;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace Test.Domain;
 
@@ -16,8 +17,8 @@ public class ActivityTest
         var name = "ActivityTest";
         var maxNumberOfParticipants = 100;
         var privacy = Privacy.Public;
-        var activityStatus = ActivityStatus.Created;
-        var accessOptions = Access.OpenToAll;
+        var activityStatus = TaskStatus.Created;
+        var accessOptions = EventAccessOption.OpenToAll;
         
         eventTest = new Event(Guid.NewGuid(),
             workSpaceId,

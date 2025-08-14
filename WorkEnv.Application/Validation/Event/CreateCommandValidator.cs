@@ -39,14 +39,14 @@ public class CreateCommandValidator : AbstractValidator<CreateCommand>
             .WithMessage("Privacy must be not empty.")
             .NotNull()
             .WithMessage("Privacy must be not null.");
-        RuleFor(c => c.activityStatus)
+        RuleFor(c => c.TaskStatus)
             .Must(StatusService.CheckActivityStatus)
             .WithMessage("Status be created, pending, completed or canceled.")
             .NotEmpty()
             .WithMessage("Status must be not empty.")
             .NotNull()
             .WithMessage("Status must be not null.");
-        RuleFor(c => c.accessOptions)
+        RuleFor(c => c.EventAccessOptionOptions)
             .Must(AccessService.CheckAccessOptions)
             .WithMessage("Access Options status be created, pending, completed or canceled.")
             .NotEmpty()

@@ -18,7 +18,7 @@ public class ChangeAccessOptionCommandValidator : AbstractValidator<ChangeAccess
             .WithMessage("AdminOrOwnerId must be not null.")
             .NotNull()
             .WithMessage("AdminOrOwnerId must be not empty");
-        RuleFor(c => c.accessOption)
+        RuleFor(c => c.EventAccessOptionOption)
             .NotEmpty()
             .WithMessage("AdminOrOwnerId must be not null.")
             .NotNull()

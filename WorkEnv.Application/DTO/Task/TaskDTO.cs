@@ -1,6 +1,7 @@
 using WorkEnv.Application.DTO.Activity;
 using WorkEnv.Domain.Enum;
 using WorkEnv.Domain.ValueObjects;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Application.DTO.Task;
 
@@ -11,9 +12,9 @@ public record TaskDTO(
     int NumberOfParticipants,
     int MaxNumberOfParticipants,
     Privacy Privacy, 
-    ActivityStatus ActivityStatus,
+    TaskStatus TaskStatus,
     string? AccessPassword,
-    Access AccessOptions,
+    EventAccessOption EventAccessOptionOptions,
     AdminInvite AdminInviteCode,
     DateTime StartDate,
     DateTime EndDate
@@ -24,8 +25,8 @@ public record TaskDTO(
     NumberOfParticipants,
     MaxNumberOfParticipants,
     Privacy, 
-    ActivityStatus,
+    TaskStatus,
     AccessPassword,
-    AccessOptions,
+    EventAccessOptionOptions,
     AdminInviteCode
 );

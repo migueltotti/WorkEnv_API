@@ -39,8 +39,8 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<EventD
             request.name,
             request.maxNumberOfParticipants,
             request.privacy,
-            request.activityStatus,
-            request.accessOptions,
+            request.TaskStatus,
+            request.EventAccessOptionOptions,
             request.eventDate,
             request.adminId
         );

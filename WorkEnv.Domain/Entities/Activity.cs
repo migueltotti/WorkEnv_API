@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using WorkEnv.Domain.Enum;
 using WorkEnv.Domain.Services;
 using WorkEnv.Domain.ValueObjects;
@@ -8,151 +7,61 @@ namespace WorkEnv.Domain.Entities;
 public abstract class Activity
 {
     public Guid Id { get; private set; }
-    public Guid? AdminId { get; private set; }
-    public Guid WorkSpaceId { get; private set; }
-    public string Name { get; private set; }
-    public int NumberOfParticipants { get; private set; }
-    public int MaxNumberOfParticipants { get; private set; }
-    public Privacy Privacy { get; private set; } 
-    public ActivityStatus ActivityStatus { get; private set; }
-    public string? AccessPassword { get; private set; }
-    public Access AccessOptions { get; private set; }
-    public AdminInvite AdminInviteCode { get; private set; }
+    public string? Title { get; private set; }
+    public string? Description { get; private set; }
+    public List<string> Images { get; private set; } = [];
+    public DateTime CreatedAt { get; private set; }
+    public DateTime StartDate { get; private set; }
+    public DateTime EndDate { get; private set; }
     
-    public User? Admin { get; private set; } 
+    // Activity 0..* - 1 WorkSpace
+    public Guid WorkSpaceId { get; private set; }
     public WorkSpace WorkSpace { get; private set; }
-    public ICollection<UserActivity> UserActivities { get; private set; } = [];
-    public ICollection<Message> Messages { get; private set; } = [];
+    
+    // Activity 1 - 0..* Message
+    public List<Message> Messages { get; private set; } = [];
 
     protected Activity()
     {
     }
 
-    protected Activity(Guid id, Guid workSpaceId, string name, int maxNumberOfParticipants, Privacy privacy, ActivityStatus activityStatus, Access accessOptions, Guid? adminId = null)
+    protected Activity(string? title, string? description, DateTime startDate, DateTime endDate, Guid workSpaceId)
     {
-        Id = id;
-        AdminId = adminId;
+        if(startDate > endDate) throw new ArgumentException("Start date cannot be greater than end date");
+        
+        Title = title;
+        Description = description;
+        CreatedAt = DateTime.Now;
+        StartDate = startDate;
+        EndDate = endDate;
         WorkSpaceId = workSpaceId;
-        Name = name;
-        MaxNumberOfParticipants = maxNumberOfParticipants;
-        Privacy = privacy;
-        NumberOfParticipants = 1;
-        ActivityStatus = activityStatus;
-        AccessOptions = accessOptions;
-        AccessPassword = PasswordGenerator.GeneratePassword();
     }
-    
-    public bool IsActivityFullOfUsers()
-    {
-        return MaxNumberOfParticipants == NumberOfParticipants;
-    } 
-    
-    public void ChangeAdmin(Guid oldOwnerOrAdminId, Guid newAdminId)
-    {
-        if(!AdminId.Equals(oldOwnerOrAdminId) || !WorkSpace.OwnerId.Equals(oldOwnerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or AdminId!");
-        
-        AdminId = newAdminId;
-    } 
-    
-    public void ChangeName(Guid ownerOrAdminId, string newName)
-    {
-        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid AdminId or OwnerId !");
-        
-        if(String.IsNullOrEmpty(newName)) throw new ArgumentNullException("Name cannot be empty or null!");
-        
-        Name = newName;
-    } 
-    
-    public void UpgradeMaxNumberOfParticipants(Guid ownerOrAdminId, int newMaxNumberOfParticipants)
-    {
-        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid AdminId or OwnerId !");
-        
-        if (newMaxNumberOfParticipants is <= 1)
-            throw new ArgumentException("MaxNumberOfParticipants must be greater than 1");
-        
-        MaxNumberOfParticipants = newMaxNumberOfParticipants;
-    } 
-    
-    public string ChangeAccessPassword(Guid ownerOrAdminId)
-    {
-        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid AdminId or OwnerId !");
-            
-        AccessPassword = PasswordGenerator.GeneratePassword();
 
-        return AccessPassword;
-    } 
-    
-    public void ChangeAccessOptions(Guid ownerOrAdminId, Access accessOptions)
+    protected Activity(Guid id, string? title, string? description, DateTime startDate, DateTime endDate, Guid workSpaceId)
     {
-        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid AdminId or OwnerId !");
+        if(startDate > endDate) throw new ArgumentException("Start date cannot be greater than end date");
         
-        AccessOptions = accessOptions;
-    } 
-    
-    public void ChangePrivacy(Guid ownerOrAdminId, Privacy privacy)
-    {
-        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid AdminId or OwnerId !");
-
-        Privacy = privacy;
-    } 
-    
-    public void UpdateStatus(Guid ownerOrAdminId, ActivityStatus activityStatus)
-    {
-        if(!AdminId.Equals(ownerOrAdminId) && !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid AdminId or OwnerId !");
-        
-        ActivityStatus = activityStatus;
-    } 
-    
-    public AdminInvite GenerateAdminInviteCode(Guid ownerId, int validationTimeInDays = 3)
-    {
-        if(!WorkSpace.OwnerId.Equals(ownerId))
-            throw new AccessViolationException("Invalid OwnerId!");
-        
-        AdminInviteCode = new AdminInvite(new Random().Next(111111, 999999), DateTime.Now.AddDays(validationTimeInDays));
-
-        return AdminInviteCode;
-    } 
-    
-    public void AddUser(UserActivity userActivity)
-    {
-        if(userActivity is null)
-            throw new ArgumentNullException("UserRoleActivity cannot be null.");
-        
-        if(!userActivity.ActivityId.Equals(Id))
-            throw new ArgumentException("UserRoleActivity ActiviryId mismatch.");
-        
-        UserActivities.Add(userActivity);
-        NumberOfParticipants++;
+        Id = id;
+        Title = title;
+        Description = description;
+        CreatedAt = DateTime.Now;
+        StartDate = startDate;
+        EndDate = endDate;
+        WorkSpaceId = workSpaceId;
     }
-    
-    public void RemoveUser(UserActivity userActivity)
+
+    public void ChangeTitle(string newTitle)
     {
-        if(userActivity is null)
-            throw new ArgumentNullException("UserRoleActivity cannot be null.");
+        if(string.IsNullOrEmpty(newTitle)) throw new ArgumentNullException("Name cannot be empty or null!");
         
-        if(!userActivity.ActivityId.Equals(Id))
-            throw new ArgumentNullException("UserRoleActivity ActiviryId mismatch.");
-        
-        if(UserActivities.Count is 0)
-            throw new ArgumentException("There's no users to delete.");
-        
-        UserActivities.Remove(userActivity);
-        NumberOfParticipants--;
+        Title = newTitle;
     }
     
     public void AddMessage(Message message)
     {
-        if(message is null)
-            throw new ArgumentNullException("Message cannot be null.");
-        
-        if(!message.ActivityId.Equals(Id))
+        ArgumentNullException.ThrowIfNull(message);
+
+        if (!message.ActivityId.Equals(Id))
             throw new ArgumentException("Message does not belong to this Activity.");
         
         Messages.Add(message);
@@ -160,15 +69,24 @@ public abstract class Activity
     
     public void DeleteMessage(Message message)
     {
-        if(message is null)
-            throw new ArgumentNullException("Message cannot be null.");
-        
-        if(!message.ActivityId.Equals(Id))
-            throw new ArgumentException("Message does not belong to this Activity.");
+        ArgumentNullException.ThrowIfNull(message);
         
         if(Messages.Count is 0)
             throw new ArgumentException("There's no activities to delete.");
+
+        if (!message.ActivityId.Equals(Id))
+            throw new ArgumentException("Message does not belong to this Activity.");
         
         Messages.Remove(message);
+    }
+
+    public void ChangeDate(DateTime newStartDate, DateTime newEndDate)
+    {
+        if(newStartDate > newEndDate) throw new ArgumentException("Start date cannot be greater than end date.");
+        
+        if(CreatedAt < StartDate || CreatedAt > EndDate) throw new ArgumentException("Created date cannot be less than start date or greater than end date.");
+        
+        StartDate = newStartDate;
+        EndDate = newEndDate;
     }
 }

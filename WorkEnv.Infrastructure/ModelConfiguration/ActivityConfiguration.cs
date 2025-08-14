@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WorkEnv.Domain.Entities;
 using WorkEnv.Domain.Enum;
 using Task = WorkEnv.Domain.Entities.Task;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Infrastructure.ModelConfiguration;
 
@@ -32,7 +33,7 @@ public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
             .HasConversion<string>();
         builder.Property(a => a.ActivityStatus)
             .IsRequired()
-            .HasDefaultValue(ActivityStatus.Created)
+            .HasDefaultValue(TaskStatus.Created)
             .HasConversion<string>();
         builder.Property(a => a.AccessPassword)
             .HasMaxLength(12);

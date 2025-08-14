@@ -1,14 +1,15 @@
 using WorkEnv.Domain.Enum;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Application.Services;
 
 public static class StatusService
 {
-    public static bool CheckActivityStatus(ActivityStatus status)
+    public static bool CheckActivityStatus(TaskStatus status)
     {
-        return status is ActivityStatus.Created or
-            ActivityStatus.Pending or
-            ActivityStatus.Completed or
-            ActivityStatus.Canceled;
+        return status is TaskStatus.Created or
+            TaskStatus.Pending or
+            TaskStatus.Completed or
+            TaskStatus.Canceled;
     }
 }
