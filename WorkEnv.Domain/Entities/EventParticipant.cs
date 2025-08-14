@@ -5,11 +5,11 @@ public class EventParticipant
     public Guid Id { get; private set; }
     public DateTime RegisteredAt { get; private set; }
 
-    // EventParticipant 0..* - 1 User
+    // EventParticipant 0..* - 1 User -> Composition
     public Guid UserId { get; private set; }
     public User? User { get; private set; }
     
-    // EventParticipant 0..* - 1 Event
+    // EventParticipant 0..* - 1 Event -> Composition
     public Guid EventId { get; private set; }
     public Event? Event { get; private set; }
 
@@ -21,18 +21,18 @@ public class EventParticipant
     {
     }
 
-    public EventParticipant(DateTime registeredAt, Guid userId, Guid eventId, Guid? roleId)
+    public EventParticipant(Guid userId, Guid eventId, Guid? roleId)
     {
-        RegisteredAt = registeredAt;
+        RegisteredAt = DateTime.Now;
         UserId = userId;
         EventId = eventId;
         RoleId = roleId;
     }
 
-    public EventParticipant(Guid id, DateTime registeredAt, Guid userId, Guid eventId, Guid? roleId)
+    public EventParticipant(Guid id, Guid userId, Guid eventId, Guid? roleId)
     {
         Id = id;
-        RegisteredAt = registeredAt;
+        RegisteredAt = DateTime.Now;
         UserId = userId;
         EventId = eventId;
         RoleId = roleId;
@@ -43,14 +43,14 @@ public class EventParticipant
         ArgumentNullException.ThrowIfNull(role);
         
         Role = role;
-        RoleId = role.RoleId;
+        RoleId = role.Id;
     }
 
     public void RemoveRole(Role role)
     {
         ArgumentNullException.ThrowIfNull(role);
         
-        if(!Role.RoleId.Equals(RoleId)) throw new ArgumentException("Role Id does not match");
+        if(!Role.Id.Equals(RoleId)) throw new ArgumentException("Role Id does not match");
         
         Role = null;
         RoleId = null;

@@ -27,7 +27,20 @@ public class Event : Activity
     {
     }
 
-    public Event(string? address, int maxNumberOfParticipants, Privacy privacy, EventAccessOption accessOption, Guid adminId)
+    public Event(Guid id, string? title, string? description, DateTime startDate, DateTime endDate, Guid workSpaceId, string? address, int maxNumberOfParticipants, Privacy privacy, EventAccessOption accessOption, Guid adminId) : base(id, title, description, startDate, endDate, workSpaceId)
+    {
+        Address = address;
+        NumberOfParticipants = 0;
+        MaxNumberOfParticipants = maxNumberOfParticipants;
+        AdminInvite = null;
+        Privacy = privacy;
+        Status = EventStatus.Scheduled;
+        AccessOption = accessOption;
+        AccessKey = CodeGenerator.GenerateCode();
+        AdminId = adminId;
+    }
+    
+    public Event(string? title, string? description, DateTime startDate, DateTime endDate, Guid workSpaceId, string? address, int maxNumberOfParticipants, Privacy privacy, EventAccessOption accessOption, Guid adminId) : base(title, description, startDate, endDate, workSpaceId)
     {
         Address = address;
         NumberOfParticipants = 0;
@@ -52,10 +65,10 @@ public class Event : Activity
 
     public void IncludeParticipant(EventParticipant participant)
     {
-        if (Status is not EventStatus.Finished or EventStatus.Cancelled)
+        if (Status is not (EventStatus.Finished or EventStatus.Cancelled))
             throw new InvalidOperationException("Cannot include participant when Event Status is Finished or Cancelled");
         
-        if(Participants.FirstOrDefault(p => p.Id == participant.Id) is not null)
+        if(Participants.Exists(p => p.Id == participant.Id) is true)
             throw new InvalidOperationException("Cannot include participant that is already in this event");
         
         Participants.Add(participant);
@@ -63,10 +76,10 @@ public class Event : Activity
     
     public void ExcludeParticipant(EventParticipant participant)
     {
-        if (Status is not EventStatus.Finished or EventStatus.Cancelled)
+        if (Status is not (EventStatus.Finished or EventStatus.Cancelled))
             throw new InvalidOperationException("Cannot exclude participant when Event Status is Finished or Cancelled");
         
-        if(Participants.FirstOrDefault(p => p.Id == participant.Id) is not null)
+        if(Participants.Exists(p => p.Id == participant.Id) is true)
             throw new InvalidOperationException("Cannot exclude participant that is not in the event");
         
         Participants.Remove(participant);

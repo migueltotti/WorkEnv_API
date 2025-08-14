@@ -14,7 +14,7 @@ public abstract class Activity
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
     
-    // Activity 0..* - 1 WorkSpace
+    // Activity 0..* - 1 WorkSpace -> Composition
     public Guid WorkSpaceId { get; private set; }
     public WorkSpace WorkSpace { get; private set; }
     
