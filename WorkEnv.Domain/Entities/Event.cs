@@ -20,7 +20,7 @@ public class Event : Activity
     public Guid AdminId { get; private set; }
     public User? Admin { get; private set; }
     
-    // Event 0..* - 1 EventParticipant
+    // Event 1 - 0..* EventParticipant
     public List<EventParticipant> Participants { get; private set; } = [];
 
     private Event()
@@ -57,7 +57,8 @@ public class Event : Activity
     {
         AdminInvite = new AdminInvite(
             Code: CodeGenerator.GenerateCode(),
-            ExpirationDate: DateTime.Now.AddMinutes(30)
+            ExpirationDate: DateTime.Now.AddMinutes(30),
+            AccessLink: $"WorkSpace/{this.WorkSpaceId}/Event/{this.Id}/AcceptAdmin"
         );
         
         return AdminInvite;

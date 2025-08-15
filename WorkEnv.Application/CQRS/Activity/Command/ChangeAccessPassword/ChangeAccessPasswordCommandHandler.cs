@@ -29,7 +29,7 @@ public class ChangeAccessPasswordCommandHandler : IRequestHandler<ChangeAccessPa
         if(adminOrOwner is null)
             return Result<object>.Failure(UserErrors.UserNotFound);
         
-        activity.ChangeAccessPassword(adminOrOwner.UserId);
+        activity.ChangeAccessPassword(adminOrOwner.Id);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);

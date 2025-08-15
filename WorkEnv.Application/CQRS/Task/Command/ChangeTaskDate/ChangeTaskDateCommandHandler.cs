@@ -29,7 +29,7 @@ public class ChangeTaskDateCommandHandler : IRequestHandler<ChangeTaskDateComman
         if (adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        task.ChangeDate(adminOrOwner.UserId, request.newStartDate, request.newEndDate);
+        task.ChangeDate(adminOrOwner.Id, request.newStartDate, request.newEndDate);
         
         _uof.TaskRepository.Update(task);
         await _uof.CommitChangesAsync(cancellationToken);

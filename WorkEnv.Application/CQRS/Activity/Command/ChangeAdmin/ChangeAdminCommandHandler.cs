@@ -34,7 +34,7 @@ public class ChangeAdminCommandHandler : IRequestHandler<ChangeAdminCommand, Res
         if(newAdmin is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.ChangeAdmin(adminOrOwner.UserId, newAdmin.UserId);
+        activity.ChangeAdmin(adminOrOwner.Id, newAdmin.Id);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);

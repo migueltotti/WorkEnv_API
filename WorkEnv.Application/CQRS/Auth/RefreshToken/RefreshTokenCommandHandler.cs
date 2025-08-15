@@ -35,7 +35,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
             return Result<TokenResponse>.Failure(UserErrors.UserNotFound);
 
         var isRefreshTokenValid = await _uof.UserRepository
-            .ValidateRefreshToken(user.UserId, request.refreshToken, cancellationToken);
+            .ValidateRefreshToken(user.Id, request.refreshToken, cancellationToken);
         
         if(!isRefreshTokenValid)
             return Result<TokenResponse>.Failure(LoginError.RefreshTokenInvalid);
@@ -44,7 +44,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         var refreshToken = _tokenManager.GenerateRefreshToken();
         var refreshTokenExpiresAt = DateTime.UtcNow.AddMinutes(int.Parse(_config["Jwt:RefreshTokenValidityInMinutes"]));
 
-        await _uof.UserRepository.SetRefreshToken(user.UserId, refreshToken, refreshTokenExpiresAt,  cancellationToken);
+        await _uof.UserRepository.SetRefreshToken(user.Id, refreshToken, refreshTokenExpiresAt,  cancellationToken);
         await _uof.CommitChangesAsync(cancellationToken);
         
         var tokenResponse = new TokenResponse(token, refreshToken, refreshTokenExpiresAt);

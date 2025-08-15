@@ -13,7 +13,7 @@ public class WorkSpace
     public Guid OwnerId { get; private set; }
     public User? Owner { get; private set; }
     
-    // WorkSpace 1 - 0..* Activitie
+    // WorkSpace 1 - 0..* Activity
     public List<Activity> Activities { get; private set; } = [];
     
     // WorkSpace 1 - 0..* Message
@@ -23,7 +23,7 @@ public class WorkSpace
     public List<Role> Roles { get; private set; } = [];
     
     // WorkSpace 1 - 0..* Role
-    public List<Collaboration> Collaborators { get; private set; } = [];
+    public List<Collaborator> Collaborators { get; private set; } = [];
     
     
     private WorkSpace()

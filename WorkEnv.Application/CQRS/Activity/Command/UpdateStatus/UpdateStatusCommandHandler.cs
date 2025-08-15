@@ -29,7 +29,7 @@ public class UpdateStatusCommandHandler : IRequestHandler<UpdateStatusCommand, R
         if(adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.UpdateStatus(adminOrOwner.UserId, request.status);
+        activity.UpdateStatus(adminOrOwner.Id, request.status);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);

@@ -1,9 +1,10 @@
 namespace WorkEnv.Domain.Entities;
 
-public class Collaboration
+public class Collaborator
 {
     public Guid Id { get; private set; }    
     public DateTime JoinedAt { get; private set; }
+    public DateTime ResignedAt { get; private set; }
     
     // Collaborator 0..* - 1 User -> Composition
     public Guid UserId { get; private set; }
@@ -17,22 +18,24 @@ public class Collaboration
     public Guid? RoleId { get; private set; }
     public Role? Role { get; private set; }
 
-    private Collaboration()
+    private Collaborator()
     {
     }
 
-    public Collaboration(Guid id, DateTime joinedAt, Guid userId, Guid workSpaceId, Guid? roleId)
+    public Collaborator(Guid id, DateTime joinedAt, DateTime resignedAt, Guid userId, Guid workSpaceId, Guid? roleId)
     {
         Id = id;
         JoinedAt = joinedAt;
+        ResignedAt = resignedAt;
         UserId = userId;
         WorkSpaceId = workSpaceId;
         RoleId = roleId;
     }
 
-    public Collaboration(DateTime joinedAt, Guid userId, Guid workSpaceId, Guid? roleId)
+    public Collaborator(DateTime joinedAt, DateTime resignedAt, Guid userId, Guid workSpaceId, Guid? roleId)
     {
         JoinedAt = joinedAt;
+        ResignedAt = resignedAt;
         UserId = userId;
         WorkSpaceId = workSpaceId;
         RoleId = roleId;
@@ -52,5 +55,10 @@ public class Collaboration
         
         RoleId = null;
         Role = null;
+    }
+
+    public void ResignCollaboration()
+    {
+        ResignedAt = DateTime.UtcNow;
     }
 }

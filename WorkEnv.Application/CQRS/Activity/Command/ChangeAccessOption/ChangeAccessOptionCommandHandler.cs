@@ -29,7 +29,7 @@ public class ChangeAccessOptionCommandHandler : IRequestHandler<ChangeAccessOpti
         if(adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.ChangeAccessOptions(adminOrOwner.UserId, request.EventAccessOptionOption);
+        activity.ChangeAccessOptions(adminOrOwner.Id, request.EventAccessOptionOption);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);

@@ -33,7 +33,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokenRes
         var refreshToken = _tokenManager.GenerateRefreshToken();
         var refreshTokenExpiresAt = DateTime.UtcNow.AddMinutes(int.Parse(_config["Jwt:RefreshTokenValidityInMinutes"]));
 
-        await _uof.UserRepository.SetRefreshToken(user.UserId, refreshToken, refreshTokenExpiresAt, cancellationToken);
+        await _uof.UserRepository.SetRefreshToken(user.Id, refreshToken, refreshTokenExpiresAt, cancellationToken);
         await _uof.CommitChangesAsync(cancellationToken);
         
         var tokenResponse = new TokenResponse(token, refreshToken, refreshTokenExpiresAt);

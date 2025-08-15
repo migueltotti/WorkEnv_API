@@ -18,7 +18,7 @@ public class CodeGenerator
     /// Console.WriteLine(inviteCode) // 1a8BCd
     /// </example>
     /// <returns></returns>
-    public static string GenerateCode()
+    public static string GenerateCode(int codeLength = PASSWORDLENGTH)
     {
         var allCharacters = UpperCaseLetters + LowerCaseLetters + Digits;
         var random = new Random();

@@ -33,7 +33,7 @@ public class ChangeOwnerCommandHandler : IRequestHandler<ChangeOwnerCommand, Res
         if (newOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        workSpace.ChangeOwner(oldOwner.UserId, newOwner.UserId);
+        workSpace.ChangeOwner(oldOwner.Id, newOwner.Id);
         
         _uof.WorkSpaceRepository.Update(workSpace);
         await _uof.CommitChangesAsync(cancellationToken);

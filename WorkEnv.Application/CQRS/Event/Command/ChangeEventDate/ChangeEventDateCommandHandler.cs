@@ -29,7 +29,7 @@ public class ChangeEventDateCommandHandler : IRequestHandler<ChangeEventDateComm
         if (adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        @event.ChangeEventDate(adminOrOwner.UserId, request.newEventDate);
+        @event.ChangeEventDate(adminOrOwner.Id, request.newEventDate);
         
         _uof.EventRepository.Update(@event);
         await _uof.CommitChangesAsync(cancellationToken);

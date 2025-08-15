@@ -14,32 +14,28 @@ public class Role
     public WorkSpace? WorkSpace { get; private set; }
 
     // Role 0..1 - 0..* EventParticipant -> Aggregation
-    public Guid? EventParticipantId { get; private set; }
-    public EventParticipant? EventParticipant { get; private set; }
+    public List<EventParticipant> EventParticipants { get; private set; } = [];
     
     // Role 0..1 - 0..* Collaborator -> Aggregation
-    public Guid? CollaboratorId { get; private set; }
-    public Collaboration? Collaborator { get; private set; }
+    public List<Collaborator> Collaborators { get; private set; } = [];
 
     private Role()
     {
     }
 
-    public Role(Guid Id, string? name, string? description, Guid workSpaceId, Guid? eventParticipantId)
+    public Role(Guid id, string? name, string? description, Guid workSpaceId)
     {
-        Id = Id;
+        Id = id;
         Name = name;
         Description = description;
         WorkSpaceId = workSpaceId;
-        EventParticipantId = eventParticipantId;
     }
 
-    public Role(string? name, string? description, Guid workSpaceId, Guid? eventParticipantId)
+    public Role(string? name, string? description, Guid workSpaceId)
     {
         Name = name;
         Description = description;
         WorkSpaceId = workSpaceId;
-        EventParticipantId = eventParticipantId;
     }
 
     public void ChangeName(string newName)

@@ -10,7 +10,7 @@ public class Task : Activity
     public TaskPriority TaskPriority { get; private set; }
 
     // Task 1 - 0..* TaskAssignment
-    public List<TaskAssignment> ResponsibleUsers { get; private set; } = [];
+    public List<TaskAssignment> AssignedUsers { get; private set; } = [];
 
     private Task()
     {
@@ -43,10 +43,10 @@ public class Task : Activity
         if (Status is not (TaskStatus.Completed or TaskStatus.Canceled))
             throw new InvalidOperationException("Cannot include responsible user when Task Status is Completed or Cancelled");
         
-        if(ResponsibleUsers.Exists(p => p.Id == responsible.Id) is true)
+        if(AssignedUsers.Exists(p => p.Id == responsible.Id) is true)
             throw new InvalidOperationException("Cannot include responsible user that is already in this task");
         
-        ResponsibleUsers.Add(responsible);
+        AssignedUsers.Add(responsible);
     }
     
     public void ExcludeResponsible(TaskAssignment responsible)
@@ -54,9 +54,9 @@ public class Task : Activity
         if (Status is not (TaskStatus.Completed or TaskStatus.Canceled))
             throw new InvalidOperationException("Cannot exclude responsible user when Task Status is Completed or Cancelled");
         
-        if(ResponsibleUsers.Exists(p => p.Id == responsible.Id) is true)
+        if(AssignedUsers.Exists(p => p.Id == responsible.Id) is true)
             throw new InvalidOperationException("Cannot exclude responsible user that is not in the task");
         
-        ResponsibleUsers.Remove(responsible);
+        AssignedUsers.Remove(responsible);
     }
 }

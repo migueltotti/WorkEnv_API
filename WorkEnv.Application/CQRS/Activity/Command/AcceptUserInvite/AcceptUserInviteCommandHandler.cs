@@ -40,7 +40,7 @@ public class AcceptUserInviteCommandHandler : IRequestHandler<AcceptUserInviteCo
                 return Result.Result.Failure(ActivityErrors.IncorrectAccessPassword);
         }
             
-        var userActivity = new UserActivity(user.UserId, activity.Id);
+        var userActivity = new UserActivity(user.Id, activity.Id);
             
         activity.AddUser(userActivity);
         

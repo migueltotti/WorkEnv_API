@@ -29,7 +29,7 @@ public class ChangePrivacyCommandHandler : IRequestHandler<ChangePrivacyCommand,
         if(adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.ChangePrivacy(adminOrOwner.UserId, request.privacy);
+        activity.ChangePrivacy(adminOrOwner.Id, request.privacy);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);

@@ -29,7 +29,7 @@ public class UpgradeMaxNumberOfParticipantsCommandHandler : IRequestHandler<Upgr
         if(adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.UpgradeMaxNumberOfParticipants(adminOrOwner.UserId, request.numberOfParticipants);
+        activity.UpgradeMaxNumberOfParticipants(adminOrOwner.Id, request.numberOfParticipants);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);

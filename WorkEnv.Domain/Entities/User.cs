@@ -5,7 +5,7 @@ namespace WorkEnv.Domain.Entities;
 
 public class User
 {
-    public Guid UserId { get; private set; }
+    public Guid Id { get; private set; }
     public string? Name { get; private set; }
     public string? Email { get; private set; }
     public string? Password { get; private set; }
@@ -21,27 +21,24 @@ public class User
     public List<WorkSpace> WorkSpaces { get; private set; } = [];
     
     // User 1 - 0..* Collaborator
-    public List<Collaboration> Collaborations { get; private set; } = [];
+    public List<Collaborator> Collaborations { get; private set; } = [];
     
-    // User 2 - 0..* FollowRequest
-    public List<FollowRequest> FollowRequests { get; private set; } = [];
+    // User 0..* - 0..* User -> Follow
+    public List<Follow> Followers { get; private set; } = [];
+    
+    // User 0..* - 0..* User -> Follow
+    public List<Follow> Following { get; private set; } = [];
     
     // User 1 - 0..* EventParticipant
-    public List<EventParticipant> EventParticipants { get; private set; } = [];
-    
-    // User 1 - 0..* Event
-    public List<Event> Events { get; private set; } = [];
-    
-    // User 1 - 0..* TaskAssignment
-    public List<TaskAssignment> TaskAssignments { get; private set; } = [];
+    public List<EventParticipant> Events { get; private set; } = [];
 
     private User()
     {
     }
 
-    public User(Guid userId, string? name, string? email, string? password, string? cpfCnpj, DateTime dateBirth, string? profilePicture, string? personalDescription, Privacy privacy)
+    public User(Guid id, string? name, string? email, string? password, string? cpfCnpj, DateTime dateBirth, string? profilePicture, string? personalDescription, Privacy privacy)
     {
-        UserId = userId;
+        Id = id;
         Name = name;
         Email = email;
         Password = password;

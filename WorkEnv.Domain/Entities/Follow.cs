@@ -2,7 +2,7 @@ using WorkEnv.Domain.Enum;
 
 namespace WorkEnv.Domain.Entities;
 
-public class FollowRequest
+public class Follow
 {
     public Guid Id { get; private set; }
     public DateTime RequestedAt { get; private set; }
@@ -16,11 +16,11 @@ public class FollowRequest
     public Guid FolloweeId { get; private set; }
     public User? Followee { get; private set; }
 
-    private FollowRequest()
+    private Follow()
     {
     }
 
-    public FollowRequest(Guid id, DateTime requestedAt, FollowStatus status, Guid followerId, Guid followeeId)
+    public Follow(Guid id, DateTime requestedAt, FollowStatus status, Guid followerId, Guid followeeId)
     {
         Id = id;
         RequestedAt = requestedAt;
@@ -29,7 +29,7 @@ public class FollowRequest
         FolloweeId = followeeId;
     }
 
-    public FollowRequest(DateTime requestedAt, FollowStatus status, Guid followerId, Guid followeeId)
+    public Follow(DateTime requestedAt, FollowStatus status, Guid followerId, Guid followeeId)
     {
         RequestedAt = requestedAt;
         Status = status;

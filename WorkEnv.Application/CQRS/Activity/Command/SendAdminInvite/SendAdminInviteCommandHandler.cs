@@ -33,7 +33,7 @@ public class SendAdminInviteCommandHandler : IRequestHandler<SendAdminInviteComm
         if(admin is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
 
-        var inviteCode = activity.GenerateAdminInviteCode(owner.UserId);
+        var inviteCode = activity.GenerateAdminInviteCode(owner.Id);
         
         // Send and Email to new Admin with the inviteCode
         // RabbitMQ

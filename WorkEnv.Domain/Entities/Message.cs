@@ -57,4 +57,18 @@ public record Message
         WorkSpaceId = workSpaceId;
         ActivityId = activityId;
     }
+
+    public void ChangeTitle(string newTitle)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(newTitle);
+        
+        Content = newTitle;
+    }
+    
+    public void ChangeContent(string newTitle)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(newTitle);
+        
+        Content = newTitle;
+    }
 }
