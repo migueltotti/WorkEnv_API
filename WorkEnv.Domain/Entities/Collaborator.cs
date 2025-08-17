@@ -2,9 +2,8 @@ namespace WorkEnv.Domain.Entities;
 
 public class Collaborator
 {
-    public Guid Id { get; private set; }    
     public DateTime JoinedAt { get; private set; }
-    public DateTime ResignedAt { get; private set; }
+    public DateTime? ResignedAt { get; private set; }
     
     // Collaborator 0..* - 1 User -> Composition
     public Guid UserId { get; private set; }
@@ -22,20 +21,11 @@ public class Collaborator
     {
     }
 
-    public Collaborator(Guid id, DateTime joinedAt, DateTime resignedAt, Guid userId, Guid workSpaceId, Guid? roleId)
-    {
-        Id = id;
-        JoinedAt = joinedAt;
-        ResignedAt = resignedAt;
-        UserId = userId;
-        WorkSpaceId = workSpaceId;
-        RoleId = roleId;
-    }
 
-    public Collaborator(DateTime joinedAt, DateTime resignedAt, Guid userId, Guid workSpaceId, Guid? roleId)
+    public Collaborator(DateTime joinedAt, Guid userId, Guid workSpaceId, Guid? roleId)
     {
         JoinedAt = joinedAt;
-        ResignedAt = resignedAt;
+        ResignedAt = null;
         UserId = userId;
         WorkSpaceId = workSpaceId;
         RoleId = roleId;

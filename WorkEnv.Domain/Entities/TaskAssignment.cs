@@ -2,7 +2,6 @@ namespace WorkEnv.Domain.Entities;
 
 public class TaskAssignment
 {
-    public Guid Id { get; private set; }
     public DateTime AssignedAt { get; private set; }
     public DateTime? ResignedAt { get; private set; }
     
@@ -16,15 +15,6 @@ public class TaskAssignment
 
     private TaskAssignment()
     {
-    }
-
-    public TaskAssignment(Guid id, DateTime assignedAt, Guid assignedUserId, Guid taskId)
-    {
-        Id = id;
-        AssignedAt = assignedAt;
-        ResignedAt = null;
-        AssignedUserId = assignedUserId;
-        TaskId = taskId;
     }
 
     public TaskAssignment(DateTime assignedAt, Guid assignedUserId, Guid taskId)

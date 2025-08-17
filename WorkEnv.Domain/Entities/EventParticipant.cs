@@ -2,7 +2,6 @@ namespace WorkEnv.Domain.Entities;
 
 public class EventParticipant
 {
-    public Guid Id { get; private set; }
     public DateTime RegisteredAt { get; private set; }
 
     // EventParticipant 0..* - 1 User -> Composition
@@ -23,15 +22,6 @@ public class EventParticipant
 
     public EventParticipant(Guid userId, Guid eventId, Guid? roleId)
     {
-        RegisteredAt = DateTime.Now;
-        UserId = userId;
-        EventId = eventId;
-        RoleId = roleId;
-    }
-
-    public EventParticipant(Guid id, Guid userId, Guid eventId, Guid? roleId)
-    {
-        Id = id;
         RegisteredAt = DateTime.Now;
         UserId = userId;
         EventId = eventId;

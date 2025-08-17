@@ -4,7 +4,6 @@ namespace WorkEnv.Domain.Entities;
 
 public class Follow
 {
-    public Guid Id { get; private set; }
     public DateTime RequestedAt { get; private set; }
     public DateTime? ResponseDate { get; private set; }
     public FollowStatus Status { get; private set; }
@@ -20,30 +19,15 @@ public class Follow
     {
     }
 
-    public Follow(Guid id, DateTime requestedAt, FollowStatus status, Guid followerId, Guid followeeId)
-    {
-        Id = id;
-        RequestedAt = requestedAt;
-        Status = status;
-        FollowerId = followerId;
-        FolloweeId = followeeId;
-    }
-
     public Follow(DateTime requestedAt, FollowStatus status, Guid followerId, Guid followeeId)
     {
+        if (followeeId.Equals(followerId)) throw new ArgumentException("User cannot follow himself");
+        
         RequestedAt = requestedAt;
         Status = status;
         FollowerId = followerId;
         FolloweeId = followeeId;
-    }
-
-    public void SendRequest(Guid followerId, Guid followeeId)
-    {
-        if(!FollowerId.Equals(followerId)) throw new ArgumentException("FollowerIds do not match");
-        if(!FolloweeId.Equals(followeeId)) throw new ArgumentException("FolloweeIds do not match");
-
         ResponseDate = null;
-        Status = FollowStatus.Pending;
     }
 
     public void AcceptRequest(Guid followeeId)

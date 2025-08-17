@@ -29,8 +29,11 @@ public class User
     // User 0..* - 0..* User -> Follow
     public List<Follow> Following { get; private set; } = [];
     
+    // User 1 - 0..* Event (Admin)
+    public List<Event> AdminEvent { get; private set; } = [];
+    
     // User 1 - 0..* EventParticipant
-    public List<EventParticipant> Events { get; private set; } = [];
+    public List<EventParticipant> EventsParticipant { get; private set; } = [];
 
     private User()
     {

@@ -2,6 +2,8 @@ namespace WorkEnv.Domain.Enum;
 
 public enum Permission : int
 {
+    None = 0,
+    
     // ======== WorkSpace ========
     InviteWorkSpaceCollaborator = 11,
     RemoveWorkSpaceCollaborator = 12,

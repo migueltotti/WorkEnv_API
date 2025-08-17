@@ -69,7 +69,7 @@ public class Event : Activity
         if (Status is not (EventStatus.Finished or EventStatus.Cancelled))
             throw new InvalidOperationException("Cannot include participant when Event Status is Finished or Cancelled");
         
-        if(Participants.Exists(p => p.Id == participant.Id) is true)
+        if(Participants.Exists(p => p.UserId == participant.UserId && p.EventId == participant.EventId))
             throw new InvalidOperationException("Cannot include participant that is already in this event");
         
         Participants.Add(participant);
@@ -80,7 +80,7 @@ public class Event : Activity
         if (Status is not (EventStatus.Finished or EventStatus.Cancelled))
             throw new InvalidOperationException("Cannot exclude participant when Event Status is Finished or Cancelled");
         
-        if(Participants.Exists(p => p.Id == participant.Id) is true)
+        if(Participants.Exists(p => p.UserId == participant.UserId && p.EventId == participant.EventId))
             throw new InvalidOperationException("Cannot exclude participant that is not in the event");
         
         Participants.Remove(participant);
