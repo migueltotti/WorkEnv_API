@@ -3,15 +3,15 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.API.Response;
-using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
-using WorkEnv.Application.CQRS.User.Command.ChangeName;
-using WorkEnv.Application.CQRS.User.Command.ChangePassword;
-using WorkEnv.Application.CQRS.User.Command.Delete;
-using WorkEnv.Application.CQRS.User.Command.Register;
-using WorkEnv.Application.CQRS.User.Query.GetAllQuery;
-using WorkEnv.Application.CQRS.User.Query.GetByEmail;
-using WorkEnv.Application.CQRS.User.Query.GetById;
-using WorkEnv.Application.DTO.User;
+// using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
+// using WorkEnv.Application.CQRS.User.Command.ChangeName;
+// using WorkEnv.Application.CQRS.User.Command.ChangePassword;
+// using WorkEnv.Application.CQRS.User.Command.Delete;
+// using WorkEnv.Application.CQRS.User.Command.Register;
+// using WorkEnv.Application.CQRS.User.Query.GetAllQuery;
+// using WorkEnv.Application.CQRS.User.Query.GetByEmail;
+// using WorkEnv.Application.CQRS.User.Query.GetById;
+// using WorkEnv.Application.DTO.User;
 
 namespace WorkEnv.API.Controllers;
 
@@ -26,7 +26,7 @@ public class UsersController : Controller
         _sender = sender;
     }
     
-    [HttpGet]
+    /*[HttpGet]
     public async Task<ActionResult<List<UserDTO>>> GetAll()
     {
         var users = await _sender.Send(new GetAllQuery());
@@ -107,5 +107,5 @@ public class UsersController : Controller
         var result = await _sender.Send(new DeleteUserCommand(userId));
 
         return result.IsSuccess ? Ok("User delete successfully!") : result.ToProblemDetails();
-    }
+    }*/
 }

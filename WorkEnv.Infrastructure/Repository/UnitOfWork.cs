@@ -13,7 +13,6 @@ public class UnitOfWork : IUnitOfWork
     private ITaskRepository? _taskRepository;
     private IMessageRepository? _messageRepository;
     private IRoleRepository? _roleRepository;
-    private IUserActivityRepository? _userActivityRepository;
 
     public UnitOfWork(WorkEnvDbContext context)
     {

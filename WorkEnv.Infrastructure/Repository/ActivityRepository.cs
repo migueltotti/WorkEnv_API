@@ -8,6 +8,7 @@ namespace WorkEnv.Infrastructure.Repository;
 
 public class ActivityRepository(WorkEnvDbContext context) : Repository<Activity>(context), IActivityRepository
 {
+    /*
     public async Task<Activity?> GetByIdAsync(Guid activityId, CancellationToken cancellationToken = default)
     {
         return await context.Set<Event>().Cast<Activity>()
@@ -30,5 +31,15 @@ public class ActivityRepository(WorkEnvDbContext context) : Repository<Activity>
             .Union(context.Set<Task>())
             .Where(a => a.Name.Contains(name))
             .ToListAsync(cancellationToken);
+    }
+    */
+    public Task<Activity?> GetByIdAsync(Guid activityId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Activity>> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }

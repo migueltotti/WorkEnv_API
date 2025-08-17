@@ -8,7 +8,7 @@ namespace WorkEnv.Infrastructure.Repository;
 
 public class TaskRepository(WorkEnvDbContext context) : Repository<Task>(context), ITaskRepository
 {
-    public async Task<Task?> GetByIdAsync(Guid taskId, CancellationToken cancellationToken = default)
+    /*public async Task<Task?> GetByIdAsync(Guid taskId, CancellationToken cancellationToken = default)
     {
         return await context.Tasks
             .AsNoTracking()
@@ -27,5 +27,14 @@ public class TaskRepository(WorkEnvDbContext context) : Repository<Task>(context
                 .ThenInclude(u => u.User)
             .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == taskId, cancellationToken);
+    }*/
+    public Task<Task?> GetByIdAsync(Guid taskId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Task?> GetByIdWithUsersAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }

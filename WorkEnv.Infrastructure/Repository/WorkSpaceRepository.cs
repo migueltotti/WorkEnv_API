@@ -14,7 +14,7 @@ public class WorkSpaceRepository(WorkEnvDbContext context) : Repository<WorkSpac
         return await context.WorkSpaces
             .AsNoTracking()
             .Include(ws => ws.Activities)
-            .FirstOrDefaultAsync(ws => ws.WorkSpaceId.Equals(workSpaceId), cancellationToken);
+            .FirstOrDefaultAsync(ws => ws.Id.Equals(workSpaceId), cancellationToken);
     }
 
     public async Task<List<WorkSpace>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)

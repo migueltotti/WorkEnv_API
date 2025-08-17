@@ -2,9 +2,9 @@ using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.API.Response;
-using WorkEnv.Application.CQRS.Auth.Login;
-using WorkEnv.Application.CQRS.Auth.RefreshToken;
-using WorkEnv.Application.DTO.Auth;
+// using WorkEnv.Application.CQRS.Auth.Login;
+// using WorkEnv.Application.CQRS.Auth.RefreshToken;
+// using WorkEnv.Application.DTO.Auth;
 
 namespace WorkEnv.API.Controllers;
 
@@ -20,7 +20,7 @@ public class AuthController : Controller
         _sender = sender;
     }
 
-    [HttpPost("login")]
+    /*[HttpPost("login")]
     public async Task<ActionResult<TokenResponse>> Login([FromBody] LoginCommand request)
     {
         var result = await _sender.Send(request);
@@ -34,5 +34,5 @@ public class AuthController : Controller
         var result = await _sender.Send(request);
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails(); 
-    }
+    }*/
 }

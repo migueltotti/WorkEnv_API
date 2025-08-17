@@ -12,14 +12,18 @@ public class WorkEnvDbContext : DbContext
     public WorkEnvDbContext(DbContextOptions<WorkEnvDbContext> options) : base(options)
     {
     }
-    
-    public DbSet<User> Users { get; set; }
+
+    public DbSet<Collaborator> Collaborators { get; set; }
     public DbSet<Event> Events { get; set; }
-    public DbSet<Task> Tasks { get; set; }
-    public DbSet<WorkSpace> WorkSpaces { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<UserActivity> UserActivities { get; set; }
+    public DbSet<EventParticipant> EventParticipants { get; set; }
+    public DbSet<Follow> Follows { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskAssignment> TaskAssignments { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<WorkSpace> WorkSpaces { get; set; }
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

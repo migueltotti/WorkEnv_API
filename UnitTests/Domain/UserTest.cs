@@ -147,7 +147,7 @@ public class UserTest
         // Arrange
         var workSpace = new WorkSpace(
             Guid.NewGuid(),
-            userTest.UserId,
+            userTest.Id,
             "masterCode");
         
         // Act
@@ -185,7 +185,7 @@ public class UserTest
     {
         // Arrange
         var userActivity = new UserActivity(
-            userTest.UserId,
+            userTest.Id,
             Guid.NewGuid());
         
         // Act

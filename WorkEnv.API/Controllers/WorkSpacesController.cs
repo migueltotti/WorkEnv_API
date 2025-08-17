@@ -3,7 +3,7 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.API.Response;
-using WorkEnv.Application.CQRS.WorkSpace.Command.ChangeOwner;
+/*using WorkEnv.Application.CQRS.WorkSpace.Command.ChangeOwner;
 using CreateWorkSpaceCommand = WorkEnv.Application.CQRS.WorkSpace.Command.Create.CreateCommand;
 using WorkEnv.Application.CQRS.WorkSpace.Command.Delete;
 using WorkEnv.Application.CQRS.WorkSpace.Query.GetAll;
@@ -15,7 +15,7 @@ using WorkEnv.Application.DTO.Task;
 using WorkEnv.Application.DTO.WorkSpace;
 using WorkEnv.Application.Result;
 using CreateEventCommand = WorkEnv.Application.CQRS.Event.Command.Create.CreateCommand;
-using CreateTaskCommand = WorkEnv.Application.CQRS.Task.Command.Create.CreateCommand;
+using CreateTaskCommand = WorkEnv.Application.CQRS.Task.Command.Create.CreateCommand;*/
 
 namespace WorkEnv.API.Controllers;
 
@@ -30,7 +30,7 @@ public class WorkSpacesController : Controller
         _sender = sender;
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public async Task<ActionResult<IEnumerable<WorkSpaceDTO>>> GetAll()
     {
         var result = await _sender.Send(new GetAllQuery());
@@ -117,5 +117,5 @@ public class WorkSpacesController : Controller
         var result = await _sender.Send(command);
 
         return result.IsSuccess ? Ok("WorkSpace deleted successfully!") : result.ToProblemDetails();
-    }
+    }*/
 }

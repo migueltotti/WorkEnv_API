@@ -29,28 +29,14 @@ public class UserRepository(WorkEnvDbContext context) : Repository<User>(context
         return await context.Users.AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }
 
-    public async Task<bool> SetRefreshToken(Guid userId, string refreshToken, DateTime expirationTime, CancellationToken cancellationToken = default)
+    public Task<bool> SetRefreshToken(Guid userId, string refreshToken, DateTime expirationTime,
+        CancellationToken cancellationToken = default)
     {
-        var result = await context.Database.ExecuteSqlInterpolatedAsync(
-            $"""
-             UPDATE "Users" 
-             SET "_refreshToken" = {refreshToken}, "_expirationTime" = {expirationTime}
-             WHERE "UserId" = {userId};
-             """, cancellationToken);
-
-        return result > 0;
+        throw new NotImplementedException();
     }
 
-    public async Task<bool> ValidateRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
+    public Task<bool> ValidateRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
     {
-        var user = await GetByIdAsync(userId, cancellationToken);
-
-        var _refreshToken = user._refreshToken;
-        var _expirationTime = user._expirationTime;
-
-        if (_refreshToken is null)
-            return false;
-        
-        return _refreshToken.Equals(refreshToken) && DateTime.UtcNow <= _expirationTime;
+        throw new NotImplementedException();
     }
 }

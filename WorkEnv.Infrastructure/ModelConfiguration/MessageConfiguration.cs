@@ -18,14 +18,11 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
             .IsRequired();
         builder.Property(m => m.Title)
             .IsRequired()
-            .HasMaxLength(80);
+            .HasMaxLength(100);
         builder.Property(m => m.Content)
             .IsRequired()
-            .HasMaxLength(500);
-        builder.Property(m => m.CreateDate)
+            .HasMaxLength(2000);
+        builder.Property(m => m.PublishedAt)
             .IsRequired();
-        builder.Property(m => m.MessageType)
-            .IsRequired()
-            .HasConversion<string>(); //   ISADORA
     }
 }
