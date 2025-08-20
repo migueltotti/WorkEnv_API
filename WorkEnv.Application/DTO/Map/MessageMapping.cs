@@ -8,11 +8,10 @@ public static class MessageMapping
     {
         return new MessageDTO(
             message.MessageId,
-            message.ActivityId,
+            message.ActivityId.Value,
             message.Title,
             message.Content,
-            message.CreateDate,
-            message.MessageType
+            DateTime.Now
             );
     }
 }

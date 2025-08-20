@@ -2,6 +2,7 @@ using MediatR;
 using WorkEnv.Application.DTO.Map;
 using WorkEnv.Application.DTO.Task;
 using WorkEnv.Application.Result;
+using WorkEnv.Domain.Enum;
 using WorkEnv.Domain.Interfaces;
 
 namespace WorkEnv.Application.CQRS.Task.Command.Create;
@@ -34,16 +35,13 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<TaskDT
         }
 
         var task = new Domain.Entities.Task(
-            Guid.NewGuid(),
-            request.workSpaceId,
+            new Guid(),
             request.name,
-            request.maxNumberOfParticipants,
-            request.privacy,
-            request.TaskStatus,
-            request.EventAccessOptionOptions,
+            "",
             request.startDate,
             request.endDate,
-            request.adminId
+            request.workSpaceId,
+            TaskPriority.High
         );
         
         await _uof.TaskRepository.AddAsync(task, cancellationToken);

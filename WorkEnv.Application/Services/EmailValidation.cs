@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace WorkEnv.Application.Extensions;
 
-public static partial class EmailValidator
+public static partial class EmailValidation
 {
     public static bool IsValidEmail(this string email)
     {

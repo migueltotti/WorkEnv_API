@@ -15,7 +15,7 @@ public class SendUserInviteCommandHandler : IRequestHandler<SendUserInviteComman
 
     public async Task<Result.Result> Handle(SendUserInviteCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
 
         if (activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
@@ -40,7 +40,7 @@ public class SendUserInviteCommandHandler : IRequestHandler<SendUserInviteComman
         // This button will access the AcceptUserInviteCommandHandler and do the rest of the job.
         
         _uof.ActivityRepository.Update(activity);
-        await _uof.CommitChangesAsync(cancellationToken);
+        await _uof.CommitChangesAsync(cancellationToken);*/
         
         return Result.Result.Success();
     }

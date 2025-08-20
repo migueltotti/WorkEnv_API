@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace WorkEnv.Application.Extensions;
 
-public static partial class NameValidator
+public static partial class NameValidation
 {
     public static bool IsValidName(this string name)
     {

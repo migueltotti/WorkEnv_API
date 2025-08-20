@@ -7,6 +7,5 @@ public record MessageDTO(
     Guid ActivityId,
     string? Title,
     string? Content,
-    DateTime CreateDate,
-    MessageType MessageType
+    DateTime CreateDate
 );

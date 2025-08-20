@@ -26,9 +26,9 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<WorkSp
             return Result<WorkSpaceDTO>.Failure(WorkSpaceErrors.MasterCodeEmptyOrNull);
 
         var workSpace = new Domain.Entities.WorkSpace(
-            Guid.NewGuid(),
-            request.ownerId,
-            request.masterCode
+            "",
+            "",
+            request.ownerId
             );
         
         await _uof.WorkSpaceRepository.AddAsync(workSpace, cancellationToken);

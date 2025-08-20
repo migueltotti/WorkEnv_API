@@ -11,6 +11,7 @@ public static class UserMapping
             user.Id,
             user.Name,
             user.Email,
+            user.CpfCnpj,
             user.DateBirth
         );
     }

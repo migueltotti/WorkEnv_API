@@ -15,7 +15,7 @@ public class UpgradeMaxNumberOfParticipantsCommandHandler : IRequestHandler<Upgr
 
     public async Task<Result.Result> Handle(UpgradeMaxNumberOfParticipantsCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
 
         if (activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
@@ -32,7 +32,7 @@ public class UpgradeMaxNumberOfParticipantsCommandHandler : IRequestHandler<Upgr
         activity.UpgradeMaxNumberOfParticipants(adminOrOwner.Id, request.numberOfParticipants);
         
         _uof.ActivityRepository.Update(activity);
-        await _uof.CommitChangesAsync(cancellationToken);
+        await _uof.CommitChangesAsync(cancellationToken);*/
         
         return Result.Result.Success();
     }

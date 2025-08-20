@@ -21,17 +21,11 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<Messag
         
         if(activity is null)
             return Result<MessageDTO>.Failure(ActivityErrors.ActivityNotFound);
-
-        if(!activity.AdminId.Equals(request.ownerOrAdminId) &&
-           !activity.WorkSpace.OwnerId.Equals(request.ownerOrAdminId))
-            return Result<MessageDTO>.Failure(ActivityErrors.AdminOrOwnerIdInvalid);
         
         var message = new Domain.Entities.Message(
-            Guid.NewGuid(),
-            request.activityId,
             request.title,
             request.content,
-            request.messageType
+            activity.WorkSpaceId
         );
         
         await _uof.MessageRepository.AddAsync(message, cancellationToken);

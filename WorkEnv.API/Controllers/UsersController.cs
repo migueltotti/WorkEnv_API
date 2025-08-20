@@ -3,6 +3,12 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.API.Response;
+using WorkEnv.Application.CQRS.User.Command.Register;
+using WorkEnv.Application.CQRS.User.Query.GetAllQuery;
+using WorkEnv.Application.CQRS.User.Query.GetByEmail;
+using WorkEnv.Application.CQRS.User.Query.GetById;
+using WorkEnv.Application.DTO.User;
+
 // using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
 // using WorkEnv.Application.CQRS.User.Command.ChangeName;
 // using WorkEnv.Application.CQRS.User.Command.ChangePassword;
@@ -26,7 +32,7 @@ public class UsersController : Controller
         _sender = sender;
     }
     
-    /*[HttpGet]
+    [HttpGet]
     public async Task<ActionResult<List<UserDTO>>> GetAll()
     {
         var users = await _sender.Send(new GetAllQuery());
@@ -57,7 +63,7 @@ public class UsersController : Controller
         
         return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
-
+    
     [HttpPost]
     public async Task<ActionResult<UserDTO>> RegisterUser([FromBody] RegisterUserCommand command)
     {
@@ -68,39 +74,40 @@ public class UsersController : Controller
             : result.ToProblemDetails();
     }
     
+    /*
     [HttpPut("changeName/{userId:guid}")]
     public async Task<ActionResult<UserDTO>> ChangeName(Guid userId, ChangeNameCommand command)
     {
         if(!userId.Equals(command.userId))
             return BadRequest("UserId does not match");
-            
+
         var result = await _sender.Send(command);
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
-    
+
     [HttpPut("changeEmail/{userId:guid}")]
     public async Task<ActionResult<UserDTO>> ChangeEmail(Guid userId, ChangeEmailCommand command)
     {
         if(!userId.Equals(command.userId))
             return BadRequest("UserId does not match");
-            
+
         var result = await _sender.Send(command);
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
-    
+
     [HttpPut("changePassword/{userId:guid}")]
     public async Task<ActionResult<UserDTO>> ChangePassword(Guid userId, ChangePasswordCommand command)
     {
         if(!userId.Equals(command.userId))
             return BadRequest("UserId does not match");
-            
+
         var result = await _sender.Send(command);
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
-    
+
     [HttpDelete("{userId:guid}")]
     public async Task<ActionResult<UserDTO>> DeleteUser(Guid userId)
     {

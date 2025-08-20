@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkEnv.Domain.Entities;
 using WorkEnv.Domain.ValueObjects;
+using WorkEnv.Infrastructure.Identity;
 using Activity = System.Diagnostics.Activity;
 using Task = WorkEnv.Domain.Entities.Task;
 
 namespace WorkEnv.Infrastructure.Context;
 
-public class WorkEnvDbContext : DbContext
+public class WorkEnvDbContext : IdentityDbContext<ApplicationUser>
 {
     public WorkEnvDbContext(DbContextOptions<WorkEnvDbContext> options) : base(options)
     {
@@ -30,5 +32,25 @@ public class WorkEnvDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(WorkEnvDbContext).Assembly);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+
+        configurationBuilder.Properties<DateTime>()
+            .HaveConversion<UtcValueConverter>();
+        
+        configurationBuilder.Properties<DateTime?>()
+            .HaveConversion<UtcValueConverter>();
+    }
+}
+
+public class UtcValueConverter  : ValueConverter<DateTime, DateTime>
+{
+    public UtcValueConverter() : base(
+        v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+        v => DateTime.SpecifyKind(v, DateTimeKind.Utc))
+    {
     }
 }

@@ -22,7 +22,7 @@ public class GetActivityUsersByIdQueryHandler : IRequestHandler<GetActivityUsers
         if (@event is null)
             return Result<List<UserDTO>>.Failure(ActivityErrors.ActivityNotFound);
 
-        var users = @event.UserActivities
+        var users = @event.Participants
             .Select(u => u.User.ToUserDto());
         
         return Result<List<UserDTO>>.Success(users.ToList());

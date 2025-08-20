@@ -2,7 +2,10 @@ using MediatR;
 using WorkEnv.Application.DTO.Task;
 using WorkEnv.Application.Map;
 using WorkEnv.Application.Result;
+using WorkEnv.Domain.Enum;
 using WorkEnv.Domain.Interfaces;
+using WorkEnv.Domain.ValueObjects;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Application.CQRS.Event.Command.Create;
 
@@ -17,7 +20,7 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<EventD
 
     public async Task<Result<EventDTO>> Handle(CreateCommand request, CancellationToken cancellationToken)
     {
-        var workSpace = await _uof.WorkSpaceRepository.GetByIdAsync(request.workSpaceId, cancellationToken);
+        /*var workSpace = await _uof.WorkSpaceRepository.GetByIdAsync(request.workSpaceId, cancellationToken);
         
         if(workSpace is null)
             return Result<EventDTO>.Failure(WorkSpaceErrors.WorkSpaceNotFound);
@@ -32,7 +35,7 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<EventD
             if(admin is null)
                 return Result<EventDTO>.Failure(UserErrors.UserNotFound);
         }
-        
+       
         var @event = new Domain.Entities.Event(
             Guid.NewGuid(),
             request.workSpaceId,
@@ -47,7 +50,21 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<EventD
         
         await _uof.EventRepository.AddAsync(@event, cancellationToken);
         await _uof.CommitChangesAsync(cancellationToken);
+         */
+        var eventDto = new EventDTO(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            0,
+            0, 
+            Privacy.Private, 
+            TaskStatus.Canceled, 
+            null, 
+            EventAccessOption.PasswordRequired, 
+            new AdminInvite("", DateTime.Now, ""),
+            DateTime.Now
+        );
         
-        return Result<EventDTO>.Success(@event.ToEventDto());
+        return Result<EventDTO>.Success(eventDto);
     }
 }

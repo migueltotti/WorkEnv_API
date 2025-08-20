@@ -1,7 +1,10 @@
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using dotenv.net;
+using Microsoft.AspNetCore.Identity;
 using WorkEnv.API.ExceptionHandler;
 using WorkEnv.CrossCutting.DependencyInjection;
+using WorkEnv.Domain.Entities;
 
 namespace WorkEnv.API;
 
@@ -10,6 +13,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        if(builder.Environment.IsDevelopment()) DotEnv.Load();
 
         // Add services to the container.
 

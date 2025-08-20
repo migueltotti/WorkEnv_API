@@ -15,7 +15,7 @@ public class ChangeAccessPasswordCommandHandler : IRequestHandler<ChangeAccessPa
     
     public async Task<Result<object>> Handle(ChangeAccessPasswordCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
 
         if (activity is null)
             return Result<object>.Failure(ActivityErrors.ActivityNotFound);
@@ -32,8 +32,8 @@ public class ChangeAccessPasswordCommandHandler : IRequestHandler<ChangeAccessPa
         activity.ChangeAccessPassword(adminOrOwner.Id);
         
         _uof.ActivityRepository.Update(activity);
-        await _uof.CommitChangesAsync(cancellationToken);
+        await _uof.CommitChangesAsync(cancellationToken);*/
         
-        return Result<object>.Success(activity.AccessPassword);
+        return Result<object>.Success(new {});
     }
 }

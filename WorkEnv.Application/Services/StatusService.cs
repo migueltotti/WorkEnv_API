@@ -8,8 +8,8 @@ public static class StatusService
     public static bool CheckActivityStatus(TaskStatus status)
     {
         return status is TaskStatus.Created or
-            TaskStatus.Pending or
             TaskStatus.Completed or
-            TaskStatus.Canceled;
+            TaskStatus.Canceled or 
+            TaskStatus.Expired;
     }
 }

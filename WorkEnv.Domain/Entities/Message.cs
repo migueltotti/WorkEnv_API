@@ -22,38 +22,38 @@ public record Message
     {
     }
 
-    public Message(Guid messageId, string? title, string? content, DateTime publishedAt, Guid workSpaceId)
+    public Message(Guid messageId, string? title, string? content, Guid workSpaceId)
     {
         MessageId = messageId;
         Title = title;
         Content = content;
-        PublishedAt = publishedAt;
+        PublishedAt = DateTime.Now;
         WorkSpaceId = workSpaceId;
     }
 
-    public Message(string? title, string? content, DateTime publishedAt, Guid workSpaceId)
+    public Message(string? title, string? content, Guid workSpaceId)
     {
         Title = title;
         Content = content;
-        PublishedAt = publishedAt;
+        PublishedAt = DateTime.Now;
         WorkSpaceId = workSpaceId;
     }
 
-    public Message(Guid messageId, string? title, string? content, DateTime publishedAt, Guid workSpaceId, Guid? activityId)
+    public Message(Guid messageId, string? title, string? content, Guid workSpaceId, Guid? activityId)
     {
         MessageId = messageId;
         Title = title;
         Content = content;
-        PublishedAt = publishedAt;
+        PublishedAt = DateTime.Now;
         WorkSpaceId = workSpaceId;
         ActivityId = activityId;
     }
 
-    public Message(string? title, string? content, DateTime publishedAt, Guid workSpaceId, Guid? activityId)
+    public Message(string? title, string? content, Guid workSpaceId, Guid? activityId)
     {
         Title = title;
         Content = content;
-        PublishedAt = publishedAt;
+        PublishedAt = DateTime.Now;
         WorkSpaceId = workSpaceId;
         ActivityId = activityId;
     }

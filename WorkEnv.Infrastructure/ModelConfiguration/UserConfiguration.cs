@@ -22,7 +22,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(200);
         builder.Property(u => u.Password)
             .IsRequired()
-            .HasMaxLength(30);
+            .HasMaxLength(200);
         builder.Property(u => u.CpfCnpj)
             .IsRequired()
             .HasMaxLength(20);

@@ -15,7 +15,7 @@ public class ChangeEventDateCommandHandler : IRequestHandler<ChangeEventDateComm
     
     public async Task<Result.Result> Handle(ChangeEventDateCommand request, CancellationToken cancellationToken)
     {
-        var @event = await _uof.EventRepository.GetByIdAsync(request.eventId, cancellationToken);
+        /*var @event = await _uof.EventRepository.GetByIdAsync(request.eventId, cancellationToken);
 
         if (@event is null)
             return Result.Result.Failure(EventErrors.ActivityNotFound);
@@ -32,7 +32,7 @@ public class ChangeEventDateCommandHandler : IRequestHandler<ChangeEventDateComm
         @event.ChangeEventDate(adminOrOwner.Id, request.newEventDate);
         
         _uof.EventRepository.Update(@event);
-        await _uof.CommitChangesAsync(cancellationToken);
+        await _uof.CommitChangesAsync(cancellationToken);*/
         
         return Result.Result.Success();
     }

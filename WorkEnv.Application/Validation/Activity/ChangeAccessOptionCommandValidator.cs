@@ -4,7 +4,7 @@ using WorkEnv.Application.CQRS.Activity.Command.ChangeAccessPassword;
 
 namespace WorkEnv.Application.Validation.Activity;
 
-public class ChangeAccessOptionCommandValidator : AbstractValidator<ChangeAccessOptionsCommand>
+public class ChangeAccessOptionCommandValidator : AbstractValidator<ChangeAccessOptionCommand>
 {
     public ChangeAccessOptionCommandValidator()
     {

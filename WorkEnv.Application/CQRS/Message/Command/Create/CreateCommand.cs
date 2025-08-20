@@ -9,6 +9,5 @@ public record CreateCommand(
     Guid activityId,
     Guid ownerOrAdminId,
     string title,
-    string content,
-    MessageType messageType
+    string content
 ) : IRequest<Result<MessageDTO>>;

@@ -46,10 +46,10 @@ public class User
         Email = email;
         Password = password;
         CpfCnpj = cpfCnpj;
-        DateBirth = dateBirth;
+        DateBirth = DateTime.SpecifyKind(dateBirth, DateTimeKind.Utc);
         ProfilePicture = profilePicture;
         PersonalDescription = personalDescription;
-        RegisteredAt = DateTime.Now;
+        RegisteredAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
         Privacy = privacy;
         LastLogin = null;
     }
@@ -60,17 +60,17 @@ public class User
         Email = email;
         Password = password;
         CpfCnpj = cpfCnpj;
-        DateBirth = dateBirth;
+        DateBirth = DateTime.SpecifyKind(dateBirth, DateTimeKind.Utc);
         ProfilePicture = profilePicture;
         PersonalDescription = personalDescription;
-        RegisteredAt = DateTime.Now;
+        RegisteredAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
         Privacy = privacy;
         LastLogin = null;
     }
 
     public void RegisterLogin()
     {
-        LastLogin = DateTime.Now;
+        LastLogin = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
     }
     
     public void ChangeName(string newName)

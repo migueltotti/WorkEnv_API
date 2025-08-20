@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using WorkEnv.Domain.Entities;
 using WorkEnv.Domain.Interfaces;
+using WorkEnv.Infrastructure.Identity;
 
 namespace WorkEnv.Infrastructure.Authentication;
 
@@ -20,24 +21,28 @@ public class TokenManager : ITokenManager
         _tokenHandler = new JwtSecurityTokenHandler();
     }
 
-    public string GenerateAccessToken(User user)
+    public string GenerateAccessToken(ApplicationUser user)
     {
+        var rawSecretKey = Environment.GetEnvironmentVariable("JWT_TOKEN_SECRET_KEY")
+                           ?? throw new InvalidOperationException("Invalid secret key!");
+        
         var jwtSettings = _config.GetSection("JWT");
+        
         var secretKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtSettings["SecretKey"] ?? string.Empty));
+            Encoding.UTF8.GetBytes(rawSecretKey ?? string.Empty));
         
         var expirationTimeInMinutes = jwtSettings.GetValue<int>("TokenValidityInMinutes");
         
         var claims = new List<Claim>()
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Name, user.Name!),
+            new Claim(ClaimTypes.Name, user.GetFormatedUserName()!),
             new Claim(ClaimTypes.Email, user.Email!)
         };
 
         var token = new JwtSecurityToken(
             issuer: jwtSettings["Issuer"],
-            audience: jwtSettings["Issuer"],
+            audience: jwtSettings["Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(expirationTimeInMinutes),
             signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256)
@@ -61,7 +66,7 @@ public class TokenManager : ITokenManager
     
     public ClaimsPrincipal GetClaimsFromExpiredToken(string token)
     {
-        var secretKey = _config.GetSection("JWT").GetValue<string>("SecretKey") 
+        var secretKey = Environment.GetEnvironmentVariable("JWT_TOKEN_SECRET_KEY")
                         ?? throw new InvalidOperationException("Invalid secret key!");
 
         var tokenValidationParameters = new TokenValidationParameters

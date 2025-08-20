@@ -29,14 +29,8 @@ public class UserRepository(WorkEnvDbContext context) : Repository<User>(context
         return await context.Users.AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }
 
-    public Task<bool> SetRefreshToken(Guid userId, string refreshToken, DateTime expirationTime,
-        CancellationToken cancellationToken = default)
+    public async Task<bool> VerifyCpfOrCnpj(string cpfOrCnpj, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> ValidateRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        return await context.Users.AnyAsync(u => u.CpfCnpj.Equals(cpfOrCnpj), cancellationToken);
     }
 }

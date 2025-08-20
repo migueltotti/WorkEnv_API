@@ -59,4 +59,9 @@ public static class UserErrors
         "Past password does not match user's old password.",
         HttpStatusCode.BadRequest);
     
+    public static Error CpfOrCnpjExists => new Error(
+        "UserCpfOrCnpjExists",
+        "User with the same cpf or cnpj already exists.",
+        HttpStatusCode.BadRequest);
+    
 }

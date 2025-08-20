@@ -8,7 +8,7 @@ public static class WorkSpaceMapping
     public static WorkSpaceDTO ToWorkSpaceDto(this WorkSpace workSpace)
     {
         return new WorkSpaceDTO(
-            workSpace.WorkSpaceId,
+            workSpace.Id,
             workSpace.OwnerId,
             workSpace.NumberOfActivities
             );

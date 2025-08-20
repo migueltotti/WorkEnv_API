@@ -7,7 +7,7 @@ public static class RoleMapping
     public static RoleDTO ToRoleDTO(this Domain.Entities.Role role)
     {
         return new RoleDTO(
-            role.RoleId,
+            Guid.NewGuid(),
             role.Name,
             role.Description
         );

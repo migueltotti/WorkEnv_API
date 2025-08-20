@@ -1,4 +1,7 @@
 using WorkEnv.Application.DTO.Activity;
+using WorkEnv.Domain.Enum;
+using WorkEnv.Domain.ValueObjects;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Application.DTO.Map;
 
@@ -8,15 +11,15 @@ public static class ActivityMapping
     {
         return new ActivityDTO(
             activity.Id,
-            activity.AdminId,
+            Guid.NewGuid(), 
             activity.WorkSpaceId,
-            activity.NumberOfParticipants,
-            activity.MaxNumberOfParticipants,
-            activity.Privacy,
-            activity.ActivityStatus,
-            activity.AccessPassword,
-            activity.AccessOptions,
-            activity.AdminInviteCode
+            0,
+            0,
+            Privacy.Private,
+            TaskStatus.Created,
+            "",
+            EventAccessOption.OpenToAll,
+            new AdminInvite("", DateTime.Now,"")
         );
     }
 }
