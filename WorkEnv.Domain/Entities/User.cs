@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices.JavaScript;
 using WorkEnv.Domain.Enum;
 
 namespace WorkEnv.Domain.Entities;
@@ -46,10 +47,12 @@ public class User
         Email = email;
         Password = password;
         CpfCnpj = cpfCnpj;
-        DateBirth = DateTime.SpecifyKind(dateBirth, DateTimeKind.Utc);
+        DateBirth = dateBirth.ToUniversalTime();
+        //DateBirth = DateTime.SpecifyKind(dateBirth, DateTimeKind.Utc);
         ProfilePicture = profilePicture;
         PersonalDescription = personalDescription;
-        RegisteredAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        RegisteredAt = DateTime.UtcNow;
+        //RegisteredAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
         Privacy = privacy;
         LastLogin = null;
     }
@@ -60,17 +63,19 @@ public class User
         Email = email;
         Password = password;
         CpfCnpj = cpfCnpj;
-        DateBirth = DateTime.SpecifyKind(dateBirth, DateTimeKind.Utc);
+        DateBirth = dateBirth.ToUniversalTime();
+        //DateBirth = DateTime.SpecifyKind(dateBirth, DateTimeKind.Utc);
         ProfilePicture = profilePicture;
         PersonalDescription = personalDescription;
-        RegisteredAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        RegisteredAt = DateTime.UtcNow;
+        //RegisteredAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
         Privacy = privacy;
         LastLogin = null;
     }
 
     public void RegisterLogin()
     {
-        LastLogin = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        LastLogin = DateTime.UtcNow;
     }
     
     public void ChangeName(string newName)
