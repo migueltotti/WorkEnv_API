@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.API.Response;
 using WorkEnv.Application.CQRS.User.Command.Register;
@@ -49,6 +50,7 @@ public class UsersController : Controller
     }
     
     [HttpGet("email")]
+    [Authorize]
     public async Task<ActionResult<UserDTO>> GetByEmail([FromQuery] string userEmail)
     {
         var result = await _sender.Send(new GetByEmailQuery(userEmail));

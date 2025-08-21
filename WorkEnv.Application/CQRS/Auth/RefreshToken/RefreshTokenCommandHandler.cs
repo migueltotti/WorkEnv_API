@@ -40,7 +40,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         
         var user = await _userManager.FindByEmailAsync(email);
 
-        if (user is null || user.RefreshToken != request.refreshToken || user.RefreshTokenExpireAt <= DateTime.Now)
+        if (user is null || user.RefreshToken != request.refreshToken || user.RefreshTokenExpireAt <= DateTime.UtcNow)
             return Result<TokenResponse>.Failure(UserErrors.UserNotFound);
         
         var newAccessToken = _tokenManager.GenerateAccessToken(user);
