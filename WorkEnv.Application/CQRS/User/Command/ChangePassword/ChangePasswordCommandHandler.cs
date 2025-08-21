@@ -29,10 +29,10 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
         if(user.Password.Equals(request.newPassword))
             return Result<UserDTO>.Failure(UserErrors.EqualPassword); 
         
-        if(!request.newPassword.IsValidPassword())
+        if(!PasswordValidation.IsValidPassword(request.newPassword))
             return Result<UserDTO>.Failure(UserErrors.IncorrectEmailFormat);
         
-        user.ChangePassword(request.newPassword);
+        user.ChangePassword(request.oldPassword, request.newPassword);
 
         await _uof.CommitChangesAsync(cancellationToken);
 

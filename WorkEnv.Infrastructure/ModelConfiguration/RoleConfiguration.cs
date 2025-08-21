@@ -12,18 +12,25 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
         builder.ToTable("Role");
 
-        builder.HasKey(r => r.RoleId);
+        builder.HasKey(r => r.Id);
         
         builder.Property(r => r.Name)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(200);
         builder.Property(r => r.Description)
             .IsRequired()
-            .HasMaxLength(300);
+            .HasMaxLength(500);
+        builder.Property(r => r.Permissions)
+            .HasConversion<Permission>()
+            .IsRequired();
 
-        builder.HasMany(r => r.UserActivities)
-            .WithOne(ura => ura.Role)
-            .HasForeignKey(ura => ura.RoleId)
+        builder.HasMany(r => r.EventParticipants)
+            .WithOne(ep => ep.Role)
+            .HasForeignKey(ep => ep.RoleId)
+            .IsRequired(false);
+        builder.HasMany(r => r.Collaborators)
+            .WithOne(c => c.Role)
+            .HasForeignKey(c => c.RoleId)
             .IsRequired(false);
     }
 }

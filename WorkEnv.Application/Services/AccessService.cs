@@ -4,8 +4,8 @@ namespace WorkEnv.Application.Services;
 
 public static class AccessService
 {
-    public static bool CheckAccessOptions(Access access)
+    public static bool CheckAccessOptions(EventAccessOption eventAccessOption)
     {
-        return access is Access.PasswordRequired or Access.OpenToAll;
+        return eventAccessOption is EventAccessOption.PasswordRequired or EventAccessOption.OpenToAll;
     }
 }

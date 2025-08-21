@@ -1,5 +1,8 @@
 using WorkEnv.Application.DTO.Task;
 using WorkEnv.Domain.Entities;
+using WorkEnv.Domain.Enum;
+using WorkEnv.Domain.ValueObjects;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Application.Map;
 
@@ -14,11 +17,11 @@ public static class EventMapping
             @event.NumberOfParticipants,
             @event.MaxNumberOfParticipants,
             @event.Privacy,
-            @event.ActivityStatus,
-            @event.AccessPassword,
-            @event.AccessOptions,
-            @event.AdminInviteCode,
-            @event.EventDate
+            TaskStatus.Canceled,
+            "",
+            EventAccessOption.PasswordRequired,
+            new AdminInvite("", DateTime.Now, ""),
+            DateTime.Now
             );
     }
 }

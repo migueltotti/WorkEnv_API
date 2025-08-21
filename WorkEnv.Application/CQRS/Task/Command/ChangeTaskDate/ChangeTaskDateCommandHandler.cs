@@ -20,16 +20,13 @@ public class ChangeTaskDateCommandHandler : IRequestHandler<ChangeTaskDateComman
         if (task is null)
             return Result.Result.Failure(TaskErrors.ActivityNotFound);
         
-        if(!task.AdminId.Equals(request.adminOrOwnerId) && 
-           !task.WorkSpace.OwnerId.Equals(request.adminOrOwnerId))
-            return Result.Result.Failure(ActivityErrors.AdminOrOwnerIdInvalid);
         
         var adminOrOwner = await _uof.UserRepository.GetByIdAsync(request.adminOrOwnerId, cancellationToken);
 
         if (adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        task.ChangeDate(adminOrOwner.UserId, request.newStartDate, request.newEndDate);
+        task.ChangeDate(request.newStartDate, request.newEndDate);
         
         _uof.TaskRepository.Update(task);
         await _uof.CommitChangesAsync(cancellationToken);

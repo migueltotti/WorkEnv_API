@@ -127,14 +127,8 @@ public class CacheUserRepository : IUserRepository
         return _decorator.VerifyEmail(email, cancellationToken);
     }
 
-    public Task<bool> SetRefreshToken(Guid userId, string refreshToken, DateTime expirationTime,
-        CancellationToken cancellationToken = default)
+    public Task<bool> VerifyCpfOrCnpj(string cpfOrCnpj, CancellationToken cancellationToken = default)
     {
-        return _decorator.SetRefreshToken(userId, refreshToken, expirationTime, cancellationToken);
-    }
-
-    public Task<bool> ValidateRefreshToken(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
-    {
-        return _decorator.ValidateRefreshToken(userId, refreshToken, cancellationToken);
+        return _decorator.VerifyCpfOrCnpj(cpfOrCnpj, cancellationToken);
     }
 }

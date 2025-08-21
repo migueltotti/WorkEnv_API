@@ -10,7 +10,8 @@ public static class Authentication
 {
     public static IServiceCollection AddAuthenticationServices(this IServiceCollection services, IConfiguration config)
     {
-        var secretKey = config["JWT:SecretKey"] ?? throw new NullReferenceException("Invalid Secret Key!");
+        var secretKey = Environment.GetEnvironmentVariable("JWT_TOKEN_SECRET_KEY") ?? 
+                        throw new NullReferenceException("Invalid Secret Key!");
         
         services.AddAuthentication(options =>
         {

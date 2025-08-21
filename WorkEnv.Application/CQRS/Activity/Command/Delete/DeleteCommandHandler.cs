@@ -28,7 +28,7 @@ public class DeleteCommandHandler : IRequestHandler<DeleteCommand, Result.Result
         if (owner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        if(!activity.WorkSpace.GetMasterCode(owner.UserId)!.Equals(request.masterCode))
+        if(!activity.WorkSpace.GetMasterCode(owner.Id)!.Equals(request.masterCode))
             return Result.Result.Failure(WorkSpaceErrors.IncorrectMasterCode);
         
         _uof.ActivityRepository.Delete(activity);

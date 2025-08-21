@@ -15,7 +15,7 @@ public class ChangePrivacyCommandHandler : IRequestHandler<ChangePrivacyCommand,
 
     public async Task<Result.Result> Handle(ChangePrivacyCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
 
         if (activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
@@ -29,10 +29,10 @@ public class ChangePrivacyCommandHandler : IRequestHandler<ChangePrivacyCommand,
         if(adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.ChangePrivacy(adminOrOwner.UserId, request.privacy);
+        activity.ChangePrivacy(adminOrOwner.Id, request.privacy);
         
         _uof.ActivityRepository.Update(activity);
-        await _uof.CommitChangesAsync(cancellationToken);
+        await _uof.CommitChangesAsync(cancellationToken);*/
         
         return Result.Result.Success();
     }

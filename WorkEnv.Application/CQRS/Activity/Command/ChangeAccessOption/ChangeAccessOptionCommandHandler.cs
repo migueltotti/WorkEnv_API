@@ -4,7 +4,7 @@ using WorkEnv.Domain.Interfaces;
 
 namespace WorkEnv.Application.CQRS.Activity.Command.ChangeAccessOption;
 
-public class ChangeAccessOptionCommandHandler : IRequestHandler<ChangeAccessOptionsCommand, Result.Result>
+public class ChangeAccessOptionCommandHandler : IRequestHandler<ChangeAccessOptionCommand, Result.Result>
 {
     private readonly IUnitOfWork _uof;
 
@@ -13,9 +13,9 @@ public class ChangeAccessOptionCommandHandler : IRequestHandler<ChangeAccessOpti
         _uof = uof;
     }
 
-    public async Task<Result.Result> Handle(ChangeAccessOptionsCommand request, CancellationToken cancellationToken)
+    public async Task<Result.Result> Handle(ChangeAccessOptionCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
 
         if (activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
@@ -29,10 +29,11 @@ public class ChangeAccessOptionCommandHandler : IRequestHandler<ChangeAccessOpti
         if(adminOrOwner is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
         
-        activity.ChangeAccessOptions(adminOrOwner.UserId, request.accessOption);
+        activity.ChangeAccessOptions(adminOrOwner.Id, request.EventAccessOptionOption);
         
         _uof.ActivityRepository.Update(activity);
         await _uof.CommitChangesAsync(cancellationToken);
+        */
         
         return Result.Result.Success();
     }

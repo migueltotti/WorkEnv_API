@@ -3,7 +3,7 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WorkEnv.API.Response;
-using WorkEnv.Application.CQRS.Activity.Command.ChangeAccessOption;
+/*using WorkEnv.Application.CQRS.Activity.Command.ChangeAccessOption;
 using WorkEnv.Application.CQRS.Activity.Command.ChangeAccessPassword;
 using WorkEnv.Application.CQRS.Activity.Command.ChangePrivacy;
 using WorkEnv.Application.CQRS.Activity.Command.Delete;
@@ -20,7 +20,7 @@ using WorkEnv.Application.DTO.Message;
 using WorkEnv.Application.DTO.Task;
 using WorkEnv.Application.Result;
 using GetEventByIdQuery = WorkEnv.Application.CQRS.Event.Query.GetById.GetByIdQuery;
-using GetTaskByIdQuery = WorkEnv.Application.CQRS.Task.Query.GetById.GetByIdQuery;
+using GetTaskByIdQuery = WorkEnv.Application.CQRS.Task.Query.GetById.GetByIdQuery;*/
 
 namespace WorkEnv.API.Controllers;
 
@@ -30,7 +30,7 @@ public class ActivitiesController : Controller
 {
     private readonly ISender _sender;
 
-    public ActivitiesController(ISender sender)
+    /*public ActivitiesController(ISender sender)
     {
         _sender = sender;
     }
@@ -184,5 +184,5 @@ public class ActivitiesController : Controller
 
         return result.IsSuccess ? Ok($"Activity with id = {activityId} Deleted successfully!")
             : result.ToProblemDetails();
-    }
+    }*/
 }

@@ -1,7 +1,11 @@
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using dotenv.net;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
 using WorkEnv.API.ExceptionHandler;
 using WorkEnv.CrossCutting.DependencyInjection;
+using WorkEnv.Domain.Entities;
 
 namespace WorkEnv.API;
 
@@ -10,6 +14,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        if(builder.Environment.IsDevelopment()) DotEnv.Load();
 
         // Add services to the container.
 
@@ -17,32 +23,6 @@ public class Program
         .AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        });
-        
-        builder.Services.AddCors( options =>
-        {
-            options.AddPolicy("EnableCors", police =>
-            {
-                police.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
-            });
-        });
-        
-        builder.Services.AddRateLimiter(options =>
-        {
-            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-
-            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpcontext =>
-                RateLimitPartition.GetTokenBucketLimiter(httpcontext.User.Identity?.Name ??
-                                                         httpcontext.Request.Headers.Host.ToString(),
-                    partition => new TokenBucketRateLimiterOptions
-                    {
-                        TokenLimit = 30,
-                        ReplenishmentPeriod = TimeSpan.FromSeconds(5),
-                        TokensPerPeriod = 26,
-                        AutoReplenishment = true,
-                        QueueLimit = 0,
-                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                    }));
         });
 
         builder.Services.AddInfrastructure(builder.Configuration);
@@ -54,7 +34,36 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
-            c.CustomSchemaIds(type => type.FullName?.Replace(".", "_")); 
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sales", Version = "v1" });
+
+            //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            
+            //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
+            
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Bearer JWT "
+            });
+
+            c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[]{ }
+                }
+            });
         });
 
         var app = builder.Build();

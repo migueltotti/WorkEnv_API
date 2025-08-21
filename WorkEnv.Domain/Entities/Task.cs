@@ -1,49 +1,65 @@
 using WorkEnv.Domain.Enum;
 using WorkEnv.Domain.ValueObjects;
+using TaskStatus = WorkEnv.Domain.Enum.TaskStatus;
 
 namespace WorkEnv.Domain.Entities;
 
 public class Task : Activity
 {
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
+    public TaskStatus Status { get; private set; }
+    public TaskPriority TaskPriority { get; private set; }
+    public int NumberOfAssignedUsers { get; private set; }
+
+    // Task 1 - 0..* TaskAssignment
+    public List<TaskAssignment> AssignedUsers { get; private set; } = [];
 
     private Task()
     {
     }
 
-    public Task(
-        Guid id,
-        Guid workSpaceId,
-        string name,
-        int maxNumberOfParticipants,
-        Privacy privacy,
-        ActivityStatus activityStatus,
-        Access accessOptions,
-        DateTime startDate,
-        DateTime endDate,
-        Guid? adminId = null)
-        : base(id, workSpaceId, name, maxNumberOfParticipants, privacy, activityStatus, accessOptions, adminId)
+    public Task(Guid id, string? title, string? description, DateTime startDate, DateTime endDate, Guid workSpaceId, TaskPriority taskPriority) : base(id, title, description, startDate, endDate, workSpaceId)
     {
-        if(startDate > endDate)
-            throw new ArgumentException("Start date cannot be greater than end date");
-            
-        StartDate = startDate;
-        EndDate = endDate;
+        TaskPriority = taskPriority;
+        Status = TaskStatus.Created;
     }
 
-    public void ChangeDate(Guid ownerOrAdminId, DateTime newStartDate, DateTime newEndDate)
+    public Task(string? title, string? description, DateTime startDate, DateTime endDate, Guid workSpaceId, TaskPriority taskPriority) : base(title, description, startDate, endDate, workSpaceId)
     {
-        if(!AdminId.Equals(ownerOrAdminId) || !WorkSpace.OwnerId.Equals(ownerOrAdminId))
-            throw new AccessViolationException("Invalid OwnerId or OwnerId !");
+        TaskPriority = taskPriority;
+        Status = TaskStatus.Created;
+    }
+
+    public void CompleteTask()
+    {
+        Status = TaskStatus.Completed;
+    }
+    
+    public void CancelTask()
+    {
+        Status = TaskStatus.Canceled;
+    }
+    
+    public void IncludeResponsible(TaskAssignment responsible)
+    {
+        if (Status is not (TaskStatus.Completed or TaskStatus.Canceled))
+            throw new InvalidOperationException("Cannot include responsible user when Task Status is Completed or Cancelled");
         
-        if (EndDate.Equals(newStartDate) || EndDate < newStartDate)
-            throw new ArgumentException("The start date cannot be before the end date or equal end date.");
+        if(AssignedUsers.Exists(p => p.AssignedUserId == responsible.AssignedUserId && p.AssignedUserId == responsible.AssignedUserId))
+            throw new InvalidOperationException("Cannot include responsible user that is already in this task");
         
-        if (StartDate.Equals(newEndDate) || StartDate > newEndDate)
-            throw new ArgumentException("The end date cannot be before the start date or equal start date.");
+        AssignedUsers.Add(responsible);
+        NumberOfAssignedUsers++;
+    }
+    
+    public void ExcludeResponsible(TaskAssignment responsible)
+    {
+        if (Status is not (TaskStatus.Completed or TaskStatus.Canceled))
+            throw new InvalidOperationException("Cannot exclude responsible user when Task Status is Completed or Cancelled");
         
-        StartDate = newStartDate;
-        EndDate = newEndDate;
+        if(AssignedUsers.Exists(p => p.AssignedUserId == responsible.AssignedUserId && p.AssignedUserId == responsible.AssignedUserId))
+            throw new InvalidOperationException("Cannot exclude responsible user that is not in the task");
+        
+        AssignedUsers.Remove(responsible);
+        NumberOfAssignedUsers--;
     }
 }

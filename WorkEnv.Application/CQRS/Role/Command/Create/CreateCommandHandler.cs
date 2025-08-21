@@ -18,9 +18,9 @@ public class CreateCommandHandler : IRequestHandler<CreateCommand, Result<RoleDT
     public async Task<Result<RoleDTO>> Handle(CreateCommand request, CancellationToken cancellationToken)
     {
         var role = new Domain.Entities.Role(
-            Guid.NewGuid(),
             request.name,
-            request.description
+            request.description,
+            Guid.NewGuid()
         );
         
         await _uof.RoleRepository.AddAsync(role, cancellationToken);

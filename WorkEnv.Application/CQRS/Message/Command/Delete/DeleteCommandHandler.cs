@@ -24,10 +24,6 @@ public class DeleteCommandHandler: IRequestHandler<DeleteCommand, Result.Result>
         
         if(activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
-        
-        if (!activity.AdminId.Equals(request.adminOrOwnerId) && 
-            !activity.WorkSpace.OwnerId.Equals(request.adminOrOwnerId))
-            return Result.Result.Failure(ActivityErrors.AdminOrOwnerIdInvalid);
 
         var adminOrOwner = await _uof.UserRepository.GetByIdAsync(request.adminOrOwnerId, cancellationToken);
         

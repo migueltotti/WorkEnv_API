@@ -32,12 +32,5 @@ public class CreateCommandValidator : AbstractValidator<CreateCommand>
             .WithMessage("Content must be not empty.")
             .NotNull()
             .WithMessage("Content must be not null.");
-        RuleFor(c => c.messageType)
-            .Must(TypeService.ChechType)
-            .WithMessage("Message type must be comment, warning, important or toDo.")
-            .NotEmpty()
-            .WithMessage("Message Type must be not empty.")
-            .NotNull()
-            .WithMessage("Message Type must be not null.");
     }
 }

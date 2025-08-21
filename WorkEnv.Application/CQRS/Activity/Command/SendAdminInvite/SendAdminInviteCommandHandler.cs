@@ -15,7 +15,7 @@ public class SendAdminInviteCommandHandler : IRequestHandler<SendAdminInviteComm
 
     public async Task<Result.Result> Handle(SendAdminInviteCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
         
         if(activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
@@ -33,7 +33,7 @@ public class SendAdminInviteCommandHandler : IRequestHandler<SendAdminInviteComm
         if(admin is null)
             return Result.Result.Failure(UserErrors.UserNotFound);
 
-        var inviteCode = activity.GenerateAdminInviteCode(owner.UserId);
+        var inviteCode = activity.GenerateAdminInviteCode(owner.Id);*/
         
         // Send and Email to new Admin with the inviteCode
         // RabbitMQ

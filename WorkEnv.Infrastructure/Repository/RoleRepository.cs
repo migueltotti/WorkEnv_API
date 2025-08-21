@@ -9,15 +9,24 @@ namespace WorkEnv.Infrastructure.Repository;
 
 public class RoleRepository(WorkEnvDbContext context) : Repository<Role>(context), IRoleRepository
 {
-    public async Task<Role?> GetByIdAsync(Guid roleId, CancellationToken cancellationToken = default)
+    // public async Task<Role?> GetByIdAsync(Guid roleId, CancellationToken cancellationToken = default)
+    // {
+    //     return await context.Roles
+    //         .AsNoTracking()
+    //         .FirstOrDefaultAsync(r => r.RoleId.Equals(roleId), cancellationToken);
+    // }
+    //
+    // public async Task<Role?> GetByNameAsync(string roleName, CancellationToken cancellationToken = default)
+    // {
+    //     return await GetAsync(r => roleName.Equals(r.Name), cancellationToken);
+    // }
+    public Task<Role?> GetByIdAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
-        return await context.Roles
-            .AsNoTracking()
-            .FirstOrDefaultAsync(r => r.RoleId.Equals(roleId), cancellationToken);
+        throw new NotImplementedException();
     }
 
-    public async Task<Role?> GetByNameAsync(string roleName, CancellationToken cancellationToken = default)
+    public Task<Role?> GetByNameAsync(string roleName, CancellationToken cancellationToken = default)
     {
-        return await GetAsync(r => roleName.Equals(r.Name), cancellationToken);
+        throw new NotImplementedException();
     }
 }

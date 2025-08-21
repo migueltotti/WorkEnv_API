@@ -18,7 +18,7 @@ public class AcceptUserInviteCommandHandler : IRequestHandler<AcceptUserInviteCo
 
     public async Task<Result.Result> Handle(AcceptUserInviteCommand request, CancellationToken cancellationToken)
     {
-        var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
+        /*var activity = await _uof.ActivityRepository.GetByIdAsync(request.activityId, cancellationToken);
 
         if (activity is null)
             return Result.Result.Failure(ActivityErrors.ActivityNotFound);
@@ -31,7 +31,7 @@ public class AcceptUserInviteCommandHandler : IRequestHandler<AcceptUserInviteCo
         if(activity.IsActivityFullOfUsers())
             return Result.Result.Failure(ActivityErrors.IncorrectAccessPassword);
         
-        if (activity.AccessOptions.Equals(Access.PasswordRequired))
+        if (activity.AccessOptions.Equals(EventAccessOption.PasswordRequired))
         {
             if (String.IsNullOrEmpty(request.password))
                 return Result.Result.Failure(ActivityErrors.NullOrEmptyPassword);
@@ -40,12 +40,12 @@ public class AcceptUserInviteCommandHandler : IRequestHandler<AcceptUserInviteCo
                 return Result.Result.Failure(ActivityErrors.IncorrectAccessPassword);
         }
             
-        var userActivity = new UserActivity(user.UserId, activity.Id);
+        var userActivity = new UserActivity(user.Id, activity.Id);
             
         activity.AddUser(userActivity);
         
         _uof.ActivityRepository.Update(activity);
-        await _uof.CommitChangesAsync(cancellationToken);
+        await _uof.CommitChangesAsync(cancellationToken);*/
         
         return Result.Result.Success();
     }

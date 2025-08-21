@@ -23,8 +23,8 @@ public class GetActivityUsersByIdQueryHandler : IRequestHandler<GetActivityUsers
         if (task is null)
             return Result<List<UserDTO>>.Failure(ActivityErrors.ActivityNotFound);
 
-        var users = task.UserActivities
-            .Select(u => u.User.ToUserDto());
+        var users = task.AssignedUsers
+            .Select(u => u.AssignedUser.User.ToUserDto());
         
         return Result<List<UserDTO>>.Success(users.ToList());
     }

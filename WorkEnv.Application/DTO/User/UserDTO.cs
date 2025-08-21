@@ -6,5 +6,6 @@ public record UserDTO(
     Guid UserId,
     string Name,
     string Email,
-    DateTime DateBirth
+    string CpfCnpj,
+    DateTimeOffset DateBirth
 );

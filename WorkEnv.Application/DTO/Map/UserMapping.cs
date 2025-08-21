@@ -8,9 +8,10 @@ public static class UserMapping
     public static UserDTO ToUserDto(this User user)
     {
         return new UserDTO(
-            user.UserId,
+            user.Id,
             user.Name,
             user.Email,
+            user.CpfCnpj,
             user.DateBirth
         );
     }
