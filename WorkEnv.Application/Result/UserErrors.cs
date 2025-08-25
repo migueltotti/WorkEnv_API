@@ -39,6 +39,11 @@ public static class UserErrors
         "Past Id does not match User id.", 
         HttpStatusCode.BadRequest);
     
+    public static readonly Error UserBoundaryViolation = new Error(
+        "UserIdMismatch", 
+        "User cannot perform an action to a different user.", 
+        HttpStatusCode.BadRequest);
+    
     public static Error EmailExists => new Error(
         "UserEmailExists",
         "User with this email already exists.",

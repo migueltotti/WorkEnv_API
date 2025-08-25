@@ -1,5 +1,6 @@
 using WorkEnv.Application.DTO.User;
 using WorkEnv.Domain.Entities;
+using WorkEnv.Domain.Enum;
 
 namespace WorkEnv.Application.Map;
 
@@ -11,8 +12,10 @@ public static class UserMapping
             user.Id,
             user.Name,
             user.Email,
-            user.CpfCnpj,
-            user.DateBirth
+            user.DateBirth,
+            user.ProfilePicture,
+            user.Privacy,
+            user.PersonalDescription
         );
     }
 }

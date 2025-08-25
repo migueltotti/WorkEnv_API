@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using WorkEnv.Application.Result;
 using WorkEnv.Domain.Entities;
@@ -37,6 +38,7 @@ public class RegisterAuthUserCommandHandler : IRequestHandler<RegisterAuthUserCo
 
         var newApplicationUser = new ApplicationUser()
         {
+            Id = request.userId,
             Email = request.email,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = request.name.Replace(" ", "") + "@" + Guid.NewGuid(),

@@ -36,6 +36,7 @@ public class TokenManager : ITokenManager
         var claims = new List<Claim>()
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("sub", user.Id),
             new Claim(ClaimTypes.Name, user.GetFormatedUserName()!),
             new Claim(ClaimTypes.Email, user.Email!)
         };

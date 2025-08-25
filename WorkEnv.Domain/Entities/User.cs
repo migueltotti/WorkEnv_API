@@ -102,4 +102,21 @@ public class User
         
         Password = newPassword;
     }
+    
+    public void ChangePrivacy(Privacy newPrivacy)
+    {
+        Privacy = newPrivacy;
+    }
+    
+    public void ChangeBirthDate(DateTime newBirthDate)
+    {
+        if(newBirthDate > DateTime.Today) throw new ArgumentException("Birth date cannot be in the future!");
+        
+        DateBirth = newBirthDate;
+    }
+
+    public void ChangePersonalDescription(string newPersonalDescription)
+    {
+        PersonalDescription = newPersonalDescription;
+    }
 }

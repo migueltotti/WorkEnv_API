@@ -7,7 +7,6 @@
 **/.toolstarget
 **/.vs
 **/.vscode
-**/.idea
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
@@ -21,5 +20,20 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+# ReSharper/Rider files
+**/.idea/
+**/DotSettings.user
+**/*.DotSettings.user
+**/*.sln.DotSettings.user
+# JetBrains
+.idea/
+*.iml
+*.ipr
+*.iws
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
 LICENSE
 README.md

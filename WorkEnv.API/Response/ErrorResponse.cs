@@ -19,7 +19,7 @@ public static class ErrorResponse
                     extensions = new Dictionary<string, object?>
                     {
                         { "errors", new[] { result.Error } },
-                        { "validationErrors", new[] { result.ValidationResults } }
+                        { "validationErrors", new[] { result.ValidationFailures } }
                     }
                 }
             ),
@@ -31,7 +31,7 @@ public static class ErrorResponse
                     extensions = new Dictionary<string, object?>
                     {
                         { "errors", new[] { result.Error } },
-                        { "validationErrors", new[] { result.ValidationResults } }
+                        { "validationErrors", new[] { result.ValidationFailures } }
                     }
                 }
             ),
@@ -43,7 +43,7 @@ public static class ErrorResponse
                     extensions = new Dictionary<string, object?>
                     {
                         { "errors", new[] { result.Error } },
-                        { "validationErrors", new[] { result.ValidationResults } }
+                        { "validationErrors", new[] { result.ValidationFailures } }
                     }
                 }
             )
@@ -62,7 +62,7 @@ public static class ErrorResponse
                     extensions = new Dictionary<string, object?>
                     {
                         { "errors", new[] { result.Error } },
-                        { "validationErrors", new[] { result.ValidationResults } }
+                        { "validationErrors", new[] { result.ValidationFailures } }
                     }
                 }
             ),
@@ -74,7 +74,7 @@ public static class ErrorResponse
                     extensions = new Dictionary<string, object?>
                     {
                         { "errors", new[] { result.Error } },
-                        { "validationErrors", new[] { result.ValidationResults } }
+                        { "validationErrors", new[] { result.ValidationFailures } }
                     }
                 }
             ),
@@ -86,7 +86,7 @@ public static class ErrorResponse
                     extensions = new Dictionary<string, object?>
                     {
                         { "errors", new[] { result.Error } },
-                        { "validationErrors", new[] { result.ValidationResults } }
+                        { "validationErrors", new[] { result.ValidationFailures } }
                     }
                 }
             )

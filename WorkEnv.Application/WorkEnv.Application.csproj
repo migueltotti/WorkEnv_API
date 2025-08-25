@@ -15,7 +15,6 @@
       <Folder Include="CQRS\Activity\Command\Update\" />
       <Folder Include="CQRS\Message\Command\Update\" />
       <Folder Include="CQRS\Role\Command\Update\" />
-      <Folder Include="CQRS\User\Command\Update\" />
       <Folder Include="CQRS\WorkSpace\Command\AddEvent\" />
       <Folder Include="CQRS\WorkSpace\Command\AddTask\" />
       <Folder Include="CQRS\WorkSpace\Command\RemoveActivity\" />

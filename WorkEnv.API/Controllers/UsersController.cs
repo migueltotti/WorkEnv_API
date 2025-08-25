@@ -3,12 +3,23 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorkEnv.API.Filters;
 using WorkEnv.API.Response;
+using WorkEnv.Application.CQRS.Activity.Command.ChangePrivacy;
+using WorkEnv.Application.CQRS.User.Command.ChangeBirthDate;
+using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
+using WorkEnv.Application.CQRS.User.Command.ChangeName;
+using WorkEnv.Application.CQRS.User.Command.ChangePassword;
+using WorkEnv.Application.CQRS.User.Command.ChangePersonalDescription;
+using WorkEnv.Application.CQRS.User.Command.ChangeProfilePicture;
+using WorkEnv.Application.CQRS.User.Command.Delete;
 using WorkEnv.Application.CQRS.User.Command.Register;
 using WorkEnv.Application.CQRS.User.Query.GetAllQuery;
 using WorkEnv.Application.CQRS.User.Query.GetByEmail;
 using WorkEnv.Application.CQRS.User.Query.GetById;
 using WorkEnv.Application.DTO.User;
+using WorkEnv.Application.Services;
+using ChangePrivacyCommand = WorkEnv.Application.CQRS.User.Command.ChangePrivacy.ChangePrivacyCommand;
 
 // using WorkEnv.Application.CQRS.User.Command.ChangeEmail;
 // using WorkEnv.Application.CQRS.User.Command.ChangeName;
@@ -76,7 +87,8 @@ public class UsersController : Controller
             : result.ToProblemDetails();
     }
     
-    /*
+    [ValidateUserBoundary]
+    [Authorize]
     [HttpPut("changeName/{userId:guid}")]
     public async Task<ActionResult<UserDTO>> ChangeName(Guid userId, ChangeNameCommand command)
     {
@@ -88,6 +100,8 @@ public class UsersController : Controller
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
+    [ValidateUserBoundary]
+    [Authorize]
     [HttpPut("changeEmail/{userId:guid}")]
     public async Task<ActionResult<UserDTO>> ChangeEmail(Guid userId, ChangeEmailCommand command)
     {
@@ -99,6 +113,8 @@ public class UsersController : Controller
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
+    [ValidateUserBoundary]
+    [Authorize]
     [HttpPut("changePassword/{userId:guid}")]
     public async Task<ActionResult<UserDTO>> ChangePassword(Guid userId, ChangePasswordCommand command)
     {
@@ -109,12 +125,66 @@ public class UsersController : Controller
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
+    
+    [ValidateUserBoundary]
+    [Authorize]
+    [HttpPut("changeBirthDate/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangeBirthDate(Guid userId, ChangeBirthDateCommand command)
+    {
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
 
+        var result = await _sender.Send(command);
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+    
+    [ValidateUserBoundary]
+    [Authorize]
+    [HttpPut("changePersonalDescription/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangePersonalDescription(Guid userId, ChangePersonalDescriptionCommand command)
+    {
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
+
+        var result = await _sender.Send(command);
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+    
+    [ValidateUserBoundary]
+    [Authorize]
+    [HttpPut("changeProfilePicture/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangeProfilePicture(Guid userId, ChangeProfilePictureCommand command)
+    {
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
+
+        var result = await _sender.Send(command);
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+    
+    [ValidateUserBoundary]
+    [Authorize]
+    [HttpPut("changePrivacy/{userId:guid}")]
+    public async Task<ActionResult<UserDTO>> ChangePrivacy(Guid userId, ChangePrivacyCommand command)
+    {
+        if(!userId.Equals(command.userId))
+            return BadRequest("UserId does not match");
+
+        var result = await _sender.Send(command);
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+
+    [ValidateUserBoundary]
+    [Authorize]
     [HttpDelete("{userId:guid}")]
     public async Task<ActionResult<UserDTO>> DeleteUser(Guid userId)
     {
         var result = await _sender.Send(new DeleteUserCommand(userId));
 
         return result.IsSuccess ? Ok("User delete successfully!") : result.ToProblemDetails();
-    }*/
+    }
 }

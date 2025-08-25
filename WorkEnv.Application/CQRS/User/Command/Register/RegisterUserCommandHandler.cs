@@ -36,7 +36,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         var result = await _validator.ValidateAsync(request, cancellationToken);
         
         if (!result.IsValid)
-            return Result<UserDTO>.Failure(UserErrors.IncorrectFormatData);
+            return Result<UserDTO>.Failure(UserErrors.IncorrectFormatData, result.Errors);
 
         var emailExists = await _uof.UserRepository.VerifyEmail(request.email, cancellationToken);
         
@@ -62,15 +62,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
             privacy: request.privacy
         );
         
-        _logger.LogInformation("DateBirth={Value} Kind={Kind}", newUser.DateBirth, newUser.DateBirth.Kind);
-        _logger.LogInformation("RegisterAt={Value} Kind={Kind}", newUser.RegisteredAt, newUser.RegisteredAt.Kind);
-        _logger.LogInformation("LastLogin={Value} Kind={Kind}", newUser.LastLogin, newUser.LastLogin.HasValue ? newUser.LastLogin.Value.Kind : null);
-
-
         await _uof.UserRepository.AddAsync(newUser, cancellationToken);
         
         // Register Auth User
-        var newAuthUserCommand = new RegisterAuthUserCommand(newUser.Name, newUser.Email, decryptedPassword);
+        var newAuthUserCommand = new RegisterAuthUserCommand(newUser.Id.ToString(), newUser.Name, newUser.Email, decryptedPassword);
 
         var registerAuthUserResult = await _sender.Send(newAuthUserCommand, cancellationToken);
         

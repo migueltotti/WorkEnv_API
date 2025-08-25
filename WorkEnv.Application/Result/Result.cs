@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+using FluentValidation.Results;
 using MediatR;
+using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace WorkEnv.Application.Result;
 
@@ -7,7 +8,7 @@ public class Result
 {
     public readonly Error Error;
     public readonly bool IsSuccess;
-    public readonly List<ValidationResult> ValidationResults;
+    public readonly List<ValidationFailure> ValidationFailures;
 
     public Result(bool isSuccess)
     {
@@ -16,7 +17,7 @@ public class Result
         
         IsSuccess = isSuccess;
         Error = default;
-        ValidationResults = [];
+        ValidationFailures = [];
     }
 
     public Result(Error error, bool isSuccess)
@@ -27,19 +28,19 @@ public class Result
         
         Error = error;
         IsSuccess = isSuccess;
-        ValidationResults = [];
+        ValidationFailures = [];
     }
     
-    public Result(Error error, List<ValidationResult> validationResults, bool isSuccess)
+    public Result(Error error, List<ValidationFailure> validationFailures, bool isSuccess)
     {
         if ((isSuccess is false && error is null) ||
             (isSuccess is true && error is not null) ||
-            (validationResults.Count > 0))
+            (validationFailures.Count > 0))
             throw new ArgumentNullException("Result is Invalid!");
         
         Error = error;
         IsSuccess = isSuccess;
-        ValidationResults = validationResults;
+        ValidationFailures = validationFailures;
     }
     
     public static Result Success() => new Result(true);
@@ -51,7 +52,7 @@ public class Result<TValue> where TValue : class
     public readonly TValue Value;
     public readonly Error Error;
     public readonly bool IsSuccess;
-    public readonly List<ValidationResult> ValidationResults;
+    public readonly List<ValidationFailure> ValidationFailures;
 
     public Result(TValue value, bool isSuccess)
     {
@@ -62,7 +63,7 @@ public class Result<TValue> where TValue : class
         Value = value;
         IsSuccess = isSuccess;
         Error = Error.None;
-        ValidationResults = [];
+        ValidationFailures = [];
     }
 
     public Result(Error error, bool isSuccess)
@@ -74,24 +75,24 @@ public class Result<TValue> where TValue : class
         Error = error;
         IsSuccess = isSuccess;
         Value = default;
-        ValidationResults = [];
+        ValidationFailures = [];
     }
 
-    public Result(Error error, List<ValidationResult> validationResults, bool isSuccess)
+    public Result(Error error, List<ValidationFailure> validationFailures, bool isSuccess)
     {
         if ((isSuccess is false && error is null) ||
             (isSuccess is true && error is not null) ||
-            (validationResults.Count > 0))
+            (validationFailures.Count == 0))
             throw new ArgumentNullException("Result is Invalid!");
         
         Error = error;
         IsSuccess = isSuccess;
-        ValidationResults = validationResults;
+        ValidationFailures = validationFailures;
         Value = default;
     }
 
     public static Result<TValue> Success(TValue value) => new Result<TValue>(value, true);
     public static Result<TValue> Failure(Error err) => new Result<TValue>(err, false);
-    public static Result<TValue> Failure(Error err, List<ValidationResult> validationResults) => 
-        new Result<TValue>(err, validationResults, false);
+    public static Result<TValue> Failure(Error err, List<ValidationFailure> validationFailures) => 
+        new Result<TValue>(err, validationFailures, false);
 }
